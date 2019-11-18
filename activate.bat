@@ -1,0 +1,1 @@
+C:\Users\Leonardo\Desktop\Projeto_FBD\venv\Scripts\activate
