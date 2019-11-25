@@ -2,7 +2,7 @@
     position:relative;
     width: 300px;
     height: 300px;
-    background-color: #f1f3f6;
+    background-color: #f7f7f7;
     border-radius: 20px;
     box-shadow: 30px 30px 80px #3754aa;
     box-shadow: -30px -30px 80px #ffffff;
@@ -11,9 +11,8 @@
     margin-top:10%;
 }
 
-.body {
-    background-color: #1c1c1e;
-    
+#body{
+    background-color: #071434;
 }
 
 .content_login {
