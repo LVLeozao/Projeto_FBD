@@ -2,6 +2,21 @@
 {% block title %} Login {% endblock title %}
 
 {% block content %}
+
+<div class="d-flex justify-content-end">
+    <div class="btn-group dropleft">
+        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            Cadastrar
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Cliente</a>
+            <a class="dropdown-item" href="#">Delivery</a>
+        </div>
+    </div>
+</div>
+
+
 <form action="" method="GET">
     <div class="quadrado">
         <div class="content_login">
@@ -15,7 +30,7 @@
                 <input type="password" class="form-control" id="id_password" placeholder="Senha">
             </div>
             <div class="btn-center">
-                <button type="submit" class="btn btn-warning">Entrar</button>
+                <button type="button" class="btn btn-info">Entrar</button>
             </div>
         </div>
     </div>

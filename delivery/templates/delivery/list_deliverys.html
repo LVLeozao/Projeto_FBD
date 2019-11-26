@@ -1,0 +1,51 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+{% block title %}
+Delivery's - Pede Mais
+{% endblock title %}
+
+
+{% block content %}
+
+
+<div class="container">
+    {% for delivery in objects %}
+    <div class="accordion" id="accordionExample">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                        data-target="#{{delivery.usuario}}" aria-expanded="false" aria-controls="collapseOne">
+                        {{delivery.nome_restaurante}}
+                    </button>
+                </h2>
+            </div>
+
+            <div id="{{delivery.usuario}}" class="collapse show" aria-labelledby="headingOne"
+                data-parent="#accordionExample">
+                <div class="card-body">
+
+                    <div class="media">
+                        <img src="{% static 'img/047.svg' %}" class="mr-3" width="50px">
+
+                        <div class="media-body">
+                            <h5 class="mt-0">{{delivery.nome_restaurante}}</h5>
+                            <p>{{delivery.descricao}}</p>
+                            <div class="d-flex justify-content-end">
+                                <a href="#" class="btn btn-info">Acessar</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </br>
+    {% endfor %}
+</div>
+
+
+{% endblock content %}
