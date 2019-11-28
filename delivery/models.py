@@ -7,6 +7,7 @@ class Endereco(models.Model):
     complemento = models.CharField(max_length=200)
     bairro = models.CharField(max_length=50)
     cidade = models.CharField(max_length=100)
+    estado = models.CharField(max_length=100)
     pais = models.CharField(max_length=2, help_text="EX.: BR", verbose_name = "País")
 
     class Meta:
@@ -39,7 +40,7 @@ class Produto(models.Model):
 class Usuario(models.Model):
     telefone_1 = models.CharField(max_length=14, help_text="EX.:99999999999999")
     telefone_2 = models.CharField(max_length=14, null=True, blank=True, help_text="EX.:9999999999999")
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.PROTECT)
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.PROTECT)
     img = models.ImageField(help_text="Tamanho máximo 50x50", verbose_name="Imagem")
     
      
@@ -54,14 +55,13 @@ class Cliente(models.Model):
         ("O", "Outro"),
     )
 
-    slug = models.SlugField(max_length=250, help_text="EX.:nome-segundo")
     nome = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=250, help_text="EX.:nome-sobrenome")
+    slug = models.SlugField(max_length=250, help_text="EX.:nome-segundo", null = True, blank=True)
     genero = models.CharField(max_length=1, choices=GENERO_CHOICES)
     cpf = models.CharField(max_length=11, help_text="EX.: 99999999999")
     idade = models.IntegerField()
     usuario = models.OneToOneField(Usuario, null=True, blank=True, on_delete=models.PROTECT) 
-    endereco = models.ManyToManyField(Endereco)
+    endereco = models.OneToOneField(Endereco, on_delete=models.PROTECT)
     
     class Meta:
         verbose_name_plural = "Clientes"

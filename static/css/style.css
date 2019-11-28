@@ -7,8 +7,9 @@
     box-shadow: 30px 30px 80px #043353;
     box-shadow: -30px -30px 80px #faf8f0;
     box-shadow: 4px 4px 20px #faf8f0;
-    margin-left: 38%;
-    margin-top:10%;
+    margin-left: 30vh;
+    top: 8vw;
+    
 }
 
 #body{
@@ -37,3 +38,42 @@
 }
 
 
+.img{
+    position: absolute;
+    
+    width: 100vw;
+    height: 100vh;
+}
+
+
+.button_left{
+    position: absolute;
+    justify-content: end;
+    
+}
+
+
+.container_cadastro{
+    position: absolute;
+    width: 44vw;
+    
+}
+
+.container_bg_cadastro{
+    position: absolute;
+    width: 50vw;
+    height: 70vh;
+    background-color: #faf8f0;
+    border-radius: 20px;
+    box-shadow: 30px 30px 80px #043353;
+    box-shadow: -30px -30px 80px #faf8f0;
+    box-shadow: 4px 4px 20px #faf8f0;
+    margin-top: 15vh;
+    
+}
+
+
+#scrollContainerCadastro{
+    height: 60vh;
+    overflow-y:scroll;
+}

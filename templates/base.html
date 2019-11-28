@@ -1,4 +1,5 @@
 {% load static %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -19,8 +20,8 @@
     </title>
 </head>
 
-<body id="body">
-
+<body >
+    <img src="{% static 'img/login_bg.jpg' %}" class="img">
     
 
     {% block content %}
