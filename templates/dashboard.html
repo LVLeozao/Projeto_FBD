@@ -19,41 +19,47 @@
         {% endblock title %}
     </title>
 
-    <style>
-        body {
-            background-color: #ffffff;
-        }
-    </style>
+    
 </head>
 
 <body>
-    
-        <nav class="navbar navbar-light bg-light">
-            <div class="d-flex justify-content-start">
-                <a type="button" class="btn btn-light" href="{% url 'home' %}">
-                    <img src = "{% static 'img/icons/house.svg' %}" width="25vh">
-                </a>
+
+    <nav class="navbar navbar-light bg-light">
+        <div class="d-flex justify-content-start">
+            <a type="button" class="btn btn-light" href="{% url 'home' %}">
+                <img src="{% static 'img/icons/house.svg' %}" width="25vh">
+            </a>
+        </div>
+
+        <div class="d-flex flex-row-reverse bd-highlight">
+            <div class="p-1 bd-highlight">
+                    <div class="btn-group dropleft">
+                            <button type="button" class="btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="{% static 'img/icons/person.svg' %}" width="25vh">
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="#">Action</a>
+                              <a class="dropdown-item" href="#">Another action</a>
+                              
+                              <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            </div>
+                    </div>
+            </div>
+            <div class="p-1 bd-highlight">
+                <button type="button" class="btn btn-light">
+                    <img src="{% static 'img/icons/inbox.svg' %}" width="25vh">
+                </button>
+            </div>
+            <div class="p-1 bd-highlight">
+                <button type="button" class="btn btn-light">
+                    <img src="{% static 'img/icons/grid.svg' %}" width="25vh">
+                </button>
             </div>
 
-            <div class="d-flex flex-row-reverse bd-highlight">
-                <div class="p-1 bd-highlight">
-                    <button type="button" class="btn btn-light">
-                            <img src = "{% static 'img/icons/inbox.svg' %}" width="25vh">
-                    </button>
-                </div>
-                <div class="p-1 bd-highlight">
-                    <button type="button" class="btn btn-light">
-                            <img src = "{% static 'img/icons/person.svg' %}" width="25vh">
-                    </button>
-                </div>
-                <div class="p-1 bd-highlight">
-                    <button type="button" class="btn btn-light">
-                            <img src = "{% static 'img/icons/grid.svg' %}" width="25vh">
-                    </button>
-                </div>
 
-            </div>
-        </nav>
+        </div>
+    </nav>
 
     <div id="teste">
 
@@ -65,3 +71,6 @@
 </body>
 
 </html>
+
+
+
