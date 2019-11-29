@@ -1,5 +1,6 @@
 {% extends "dashboard.html" %}
 {% load staticfiles %}
+
 {% block title %}
 Delivery's - Pede Mais
 {% endblock title %}
@@ -8,14 +9,14 @@ Delivery's - Pede Mais
 {% block content %}
 
 
-<div class="container">
+<!-- <div class="container">
     {% for delivery in objects %}
     <div class="accordion" id="accordionExample">
         <div class="card">
             <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
                     <button class="btn btn-link" type="button" data-toggle="collapse"
-                        data-target="#{{delivery.usuario}}" aria-expanded="false" aria-controls="collapseOne">
+                        data-target="#{{delivery.usuario}}" aria-expanded="false" aria-controls="{{delivery.usuario}}">
                         {{delivery.nome_restaurante}}
                     </button>
                 </h2>
@@ -44,8 +45,28 @@ Delivery's - Pede Mais
         </div>
     </div>
     </br>
-    {% endfor %}
-</div>
+    {% endfor %} -->
+<div class="container">
+    <div class="list-group">
+        {% for delivery in objects %}
+        <a href="#" class="list-group-item list-group-item-action">
+            <div class="media">
+                <img src="{% static 'img/047.svg' %}" class="align-self-center mr-3" width="64px">
+                <div class="media-body">
+                    <h5 class="mt-0">{{delivery.nome_restaurante}}</h5>
+                    <p>{{delivery.descricao}}</p>
+                    <p class="mb-0">
+                        <b>CNPJ:</b></br>
+                        <b>Endereço:</b></br>
+                        <b>Descrição:</b>
+                    </p>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
 
+</div>
+</div>
 
 {% endblock content %}

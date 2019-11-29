@@ -11,8 +11,10 @@
             Cadastrar
         </button>
         <div class="dropdown-menu">
-            <a class="btn btn-link" href="{% url 'criarCliente' %}">Cliente</a>
-            <a class="btn btn-link" href="#">Delivery</a>
+            <a class="dropdown-item" href="{% url 'criarCliente' %}">Cliente</a>
+            <a class="dropdown-item" href="{% url 'criarDelivery' %}">Delivery</a>
+
+            
         </div>
     </div>
 </div>
@@ -29,7 +31,7 @@
             {{ form|crispy }}
 
             <div class="btn-center">
-                <input type="submit" value="Enviar">
+                <input class ="btn btn-info" type="submit" value="Enviar">
             </div>
         </div>
     </div>
