@@ -19,8 +19,8 @@ class ListProdutosDeliveryView(ListView):
     context_object_name = "objects"
 
 
-def list_deliverys(request):
-    return render(request, "delivery/list_deliverys.html")
+def HomeView(request):
+    return render(request, "delivery/home.html")
 
 
 class CreateDeliveryView(CreateView):
@@ -31,12 +31,6 @@ class CreateDeliveryView(CreateView):
 
     def post(self, request, *args, **kwargs):
         print(request.POST["nome_restaurante"])
-
-
-
-
-
-
 
 def criarDeliveryView(request):
     array = {}

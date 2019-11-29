@@ -46,23 +46,20 @@ Delivery's - Pede Mais
     </div>
     </br>
     {% endfor %} -->
-<div class="container">
+<div class="container" style="width: 70vw;">
     <div class="list-group">
         {% for delivery in objects %}
         <a href="#" class="list-group-item list-group-item-action">
             <div class="media">
-                <img src="{% static 'img/047.svg' %}" class="align-self-center mr-3" width="64px">
+                <img src="{% static 'img/icons/image.svg' %}" class="align-self-center mr-3" width="40px">
                 <div class="media-body">
                     <h5 class="mt-0">{{delivery.nome_restaurante}}</h5>
                     <p>{{delivery.descricao}}</p>
-                    <p class="mb-0">
-                        <b>CNPJ:</b></br>
-                        <b>Endereço:</b></br>
-                        <b>Descrição:</b>
-                    </p>
+
                 </div>
             </div>
         </a>
+        
         {% endfor %}
     </div>
 
