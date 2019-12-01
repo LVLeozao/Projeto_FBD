@@ -27,7 +27,7 @@
     <nav class="navbar navbar-light bg-light">
         <div class="d-flex justify-content-start">
             <a type="button" class="btn btn-light" href="{% url 'home' %}">
-                <img src="{% static 'img/icons/house.svg' %}" width="25vh">
+                <img src="{% static 'img/icons/home-24px.svg' %}" width="24vh">
             </a>
         </div>
 
@@ -35,7 +35,7 @@
             <div class="p-1 bd-highlight">
                     <div class="btn-group dropleft">
                             <button type="button" class="btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="{% static 'img/icons/person.svg' %}" width="25vh">
+                                    <img src="{% static 'img/icons/person_pin-24px.svg' %}" width="24vh">
                             </button>
                             <div class="dropdown-menu">
                               <a class="dropdown-item" href="#">Action</a>
@@ -48,13 +48,13 @@
             </div>
             <div class="p-1 bd-highlight">
                 <button type="button" class="btn btn-light">
-                    <img src="{% static 'img/icons/inbox.svg' %}" width="25vh">
+                    <img src="{% static 'img/icons/cart.svg' %}" width="24vh">
                 </button>
             </div>
             <div class="p-1 bd-highlight">
-                <button type="button" class="btn btn-light">
-                    <img src="{% static 'img/icons/grid.svg' %}" width="25vh">
-                </button>
+                <a type="button" class="btn btn-light" href="{% url 'listDeliverys' %}">
+                    <img src="{% static 'img/icons/restaurant-24px.svg' %}" width="24vh">
+                </a>
             </div>
 
 

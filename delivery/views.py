@@ -7,20 +7,30 @@ from .form import *
 from django.contrib.auth.models import User
 
 
+
+
 class ListDeliveryView(ListView):
     model = Delivery
-    template_name = "delivery/list_deliverys.html"
+    template_name = "delivery/listDeliverys.html"
     context_object_name = "objects"
 
 
-class ListProdutosDeliveryView(ListView):
+
+class ProdutosListView(ListView):
     model = Produto
-    template_name = "delivery/delivery_produtos_detail.html"
+    template_name = "delivery/listProdutos.html"
     context_object_name = "objects"
 
+    
+    def get_queryset(self, *args, **kwargs):
+        delivery = Delivery.objects.get(slug=self.kwargs['slug'])
+        produtos = delivery.get_deliverys.all()
+        return produtos
 
-def HomeView(request):
-    return render(request, "delivery/home.html")
+
+
+class HomeView(TemplateView):
+    template_name = "delivery/home.html"
 
 
 class CreateDeliveryView(CreateView):
@@ -174,10 +184,5 @@ def criarClienteView(request):
         return render(request,"delivery/cadastroCliente.html", array)
 
 
-
-
-#  validarUser = verificar_user(username,password1, email)
-#                 validarUsuario = verificar_usuario(telefone1, telefone2, imagem, validarUser)
-#                 validarCliente = verificar_cliente(nome,genero,cpf,idade,validarEntedereco,validarUsuario)
 
 

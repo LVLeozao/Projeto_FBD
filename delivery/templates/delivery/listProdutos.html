@@ -1,0 +1,44 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+
+{% block title %}
+Produtos - Pede Mais
+{% endblock title %}
+
+{% block content %}
+
+<div class="container" style="padding: 3vh;">
+    <table class="table table table-hover table-active ">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Observações</th>
+                <th scope="col">Peso(g)</th>
+                <th scope="col">Valor</th>
+                <div class="d-flex justify-content-center">
+                    <th scope="col">Opção</th>
+                </div>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in objects %}
+            <tr>
+                <th scope="row"><img src="{% static 'img/icons/image.svg' %}" class="align-self-center mr-3"
+                        width="40px"></th>
+                <td><a href="{% url 'home' %}">{{obj.nome}}</a></td>
+                <td>{{obj.observacoes}}</td>
+                <td>{{obj.peso}}</td>
+                <td>{{obj.valor}}</td>
+                <div class="d-flex justify-content-center">
+                    <td><img src="{% static 'img/icons/add_shopping_cart-24px.svg' %}" width="24vh"></td>
+                </div>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+{% endblock content %}

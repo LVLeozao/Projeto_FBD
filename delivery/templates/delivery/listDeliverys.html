@@ -50,7 +50,7 @@ Delivery's - Pede Mais
     {% for delivery in objects %}
         <div class="list-group" style="padding: 4px;">
 
-            <a href="#" class="list-group-item list-group-item-action">
+            <a href="{{delivery.get_absolute_url}}" class="list-group-item list-group-item-action">
                 <div class="media">
                     <img src="{% static 'img/icons/image.svg' %}" class="align-self-center mr-3" width="40px">
                     <div class="media-body">
@@ -72,3 +72,5 @@ Delivery's - Pede Mais
 
 
 {% endblock content %}
+
+

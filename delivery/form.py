@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Endereco, Usuario, Cliente, Delivery
+from .models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
@@ -25,6 +25,11 @@ class DeliveryForm(ModelForm):
     class Meta:
         model = Delivery
         fields = ("nome_restaurante","cnpj","descricao")
+
+class ProdutoForm(ModelForm):
+    class Meta:
+        model = Produto
+        fields = ("nome", "valor", "categoria_produto", "observacoes", "data_validade", "peso", "img")
 
 
 class UserCreationFormWithEmail(UserCreationForm):
