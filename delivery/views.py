@@ -6,8 +6,54 @@ from django.urls import reverse, reverse_lazy
 from .form import *
 from django.contrib.auth.models import User
 
+def calcularValor(produtos):
+    valorTotal = 0
+    qntTotal = 0
+    for x in produtos:
+        valorTotal+=(x.valor*x.qnt)
+        qntTotal+=x.qnt
+    
+    return valorTotal,  qntTotal
+
+def PedidoDeliveryView(request):
+    template_name = "delivery/carrinho.html"
+
+    array = {}
+
+    user = User.objects.get(id = request.user.pk)
+    cliente = user.get_cliente.all().first()
+
+    try :
+        pedido = Pedido.objects.get(cliente = cliente, status_pedido = False)
+        produtos = Produto.objects.filter(pedido = pedido).all()
+        array["objects"] = produtos
+        valorTotal, qntTotal = calcularValor(produtos)
+        array["valor"] = valorTotal
+        array["qnt"] = qntTotal
+
+    except :
+        array["objects"] = "False"
 
 
+    if request.POST:
+
+        pedido.quantidade_itens = qntTotal
+        pedido.status_pedido = True
+        pedido.valor_total = valorTotal
+
+        pedido.save()
+
+        return redirect("home")
+    
+    
+
+    return render(request, template_name, array)
+
+
+
+
+
+        
 
 class ListDeliveryView(ListView):
     model = Delivery
@@ -21,40 +67,80 @@ class ProdutosListView(ListView):
     template_name = "delivery/listProdutos.html"
     context_object_name = "objects"
 
-    
     def get_queryset(self, *args, **kwargs):
         delivery = Delivery.objects.get(slug=self.kwargs['slug'])
         produtos = delivery.get_deliverys.all()
         return produtos
 
 
+def HomeView(request):
+        user = User.objects.get(id = request.user.pk)
+        cliente = user.get_cliente.all().first()
 
-class HomeView(TemplateView):
-    template_name = "delivery/home.html"
+        array = {}
+        array["cliente"] = cliente
 
 
-class CreateDeliveryView(CreateView):
-    model = Delivery
-    fields = "__all__"
-    template_name = "delivery/criarDelivery.html"
-    success_url = reverse_lazy("login")
+        return render(request, "delivery/home.html", array)
+    
+class cadastroProduto(CreateView):
+    model = Produto
+    template_name = "delivery/cadastroProduto.html"
+    success_url = reverse_lazy("home")
 
-    def post(self, request, *args, **kwargs):
-        print(request.POST["nome_restaurante"])
+class ProdutoView(TemplateView):
+    template_name = "delivery/viewProduto.html"
+
+
+def ProdutoDetailView(request, slug):
+    template_name = "delivery/listProdutoDetail.html"
+    array = {}
+    array["objects"] = Produto.objects.get(slug = slug)
+
+    if request.GET:
+
+        user = User.objects.get(id = request.user.pk)
+        cliente = user.get_cliente.all().first()
+
+        
+        
+        try:
+            produto = Produto.objects.filter(slug = slug).first()
+            pedido = Pedido.objects.filter(cliente = cliente, status_pedido = False).first()
+            
+            produto.pedido.add(pedido) 
+            produto.qnt = request.GET["Quantidade"]
+            produto.save()
+            return redirect("carrinhoView")
+
+        except:
+            produto = Produto.objects.get(slug = slug)
+            pedido  = Pedido()
+            produto.pedido = pedido
+
+            return redirect("carrinhoView")
+            
+    return render(request, template_name, array)
+    
+
+
 
 def criarDeliveryView(request):
     array = {}
     endereco = EnderecoForm(request.POST or None)
-    usuario = UsuarioForm(request.POST or None)
     delivery = DeliveryForm(request.POST or None)
     user = UserCreationFormWithEmail(request.POST or None)
 
     array["endereco"] = endereco
-    array["usuario"] = usuario
     array["delivery"] = delivery
     array["user"] = user
+    array["erro"] = False
+    array["mensagem"] = ""
 
     if request.POST:
+        array["erro"] = False
+        array["mensagem"] = ""
+
         # Endereco
         rua = request.POST['rua']
         numero = request.POST['numero']
@@ -63,10 +149,6 @@ def criarDeliveryView(request):
         cidade = request.POST['cidade']
         estado = request.POST['estado']
         pais = request.POST['pais']
-        # Usuario
-        telefone1 = request.POST["telefone_1"]
-        telefone2 = request.POST["telefone_2"]
-        imagem = request.POST["img"]
         # User
         username = request.POST["username"]
         password1 = request.POST["password1"]
@@ -76,33 +158,46 @@ def criarDeliveryView(request):
         nome_restaurante = request.POST["nome_restaurante"]
         cnpj = request.POST["cnpj"]
         descricao  = request.POST["descricao"]
+        telefone1 = request.POST["telefone1"]
+        telefone2 = request.POST["telefone2"]
+        imagem = request.POST["img"]
 
 
-        try:
-            objEndereco = Endereco.objects.get(rua=rua, numero=numero, complemento=complemento, bairro=bairro, cidade=cidade, estado=estado, pais=pais)
-        except:
+        
+        objEndereco = Endereco.objects.filter(rua=rua, numero=numero, complemento=complemento, bairro=bairro, cidade=cidade, estado=estado, pais=pais).first()
+        objUser = User.objects.filter(username=username, password=password1, email=email).first()
+
+
+        if(objEndereco is None):
             objEndereco = Endereco(rua=rua, numero=numero, complemento=complemento,bairro=bairro, cidade=cidade, estado=estado, pais=pais)
             objEndereco.save()
 
         
-        try:
-            objUser =User.objects.get(username=username, password=password1, email=email)
-        except:
+        if(objUser is None):
             objUser = User(username=username, password=password1, email=email)
             objUser.save()
-        
-        try:
-            objUsuario = Usuario.objects.get(telefone_1=telefone1, telefone_2=telefone2, user=objUser, img=imagem)
-        except:
-            objUsuario = Usuario(telefone_1=telefone1, telefone_2=telefone2, user=objUser, img=imagem)
-            objUsuario.save()
+        else:
+            array["erro"] = True
+            array["mensagem"] = "Usuário existente, tente novamente."
+            return render(request,"delivery/cadastroCliente.html", array)
 
-        try:
-            objDelivery = Delivery.objects.get(nome_restaurante=nome_restaurante, usuario = objUsuario, cnpj = cnpj, endereco = objEndereco, descricao = descricao)
-        except:
-            
-            objDelivery = Delivery(nome_restaurante=nome_restaurante, usuario = objUsuario, cnpj = cnpj, endereco = objEndereco, descricao = descricao)
+
+
+        objDelivery =  Delivery.objects.filter(nome_restaurante=nome_restaurante, cnpj = cnpj, user=objUser, endereco=objEndereco , descricao = descricao).first()
+
+        if(objDelivery is None):
+
+            objDelivery = Delivery(nome_restaurante=nome_restaurante, descricao = descricao, cnpj = cnpj, user=objUser, telefone1 = telefone1, telefone2 = telefone2, img = imagem)
             objDelivery.save()
+            objDelivery.endereco.add(objEndereco)
+        else:
+            
+            array["erro"] = True
+            array["mensagem"] = "Cliente existente, tente novamente."
+            return render(request,"delivery/cadastroCliente.html", array)
+
+
+    
         
         return redirect("login")
     
@@ -116,16 +211,20 @@ def criarDeliveryView(request):
 def criarClienteView(request):
     array = {}
     endereco = EnderecoForm(request.POST or None)
-    usuario = UsuarioForm(request.POST or None)
     cliente = ClienteForm(request.POST or None)
     user = UserCreationFormWithEmail(request.POST or None)
 
     array["endereco"] = endereco
-    array["usuario"] = usuario
     array["cliente"] = cliente
     array["user"] = user
+    array["erro"] = False
+    array["mensagem"] = ""
+    
 
     if request.POST:
+
+        array["erro"] = False
+        array["mensagem"] = ""
 
         # Endereco
         rua = request.POST['rua']
@@ -135,10 +234,6 @@ def criarClienteView(request):
         cidade = request.POST['cidade']
         estado = request.POST['estado']
         pais = request.POST['pais']
-        # Usuario
-        telefone1 = request.POST["telefone_1"]
-        telefone2 = request.POST["telefone_2"]
-        imagem = request.POST["img"]
         # User
         username = request.POST["username"]
         password1 = request.POST["password1"]
@@ -149,33 +244,43 @@ def criarClienteView(request):
         genero = request.POST["genero"]
         cpf = request.POST["cpf"]
         idade = request.POST["idade"]
+        telefone1 = request.POST["telefone1"]
+        telefone2 = request.POST["telefone2"]
+        imagem = request.POST["img"]
 
-        try:
-            objEndereco = Endereco.objects.get(rua=rua, numero=numero, complemento=complemento, bairro=bairro, cidade=cidade, estado=estado, pais=pais)
-        except:
+
+        objEndereco = Endereco.objects.filter(rua=rua, numero=numero, complemento=complemento, bairro=bairro, cidade=cidade, estado=estado, pais=pais).first()
+        objUser = User.objects.filter(username=username, password=password1, email=email).first()
+
+
+        if(objEndereco is None):
             objEndereco = Endereco(rua=rua, numero=numero, complemento=complemento,bairro=bairro, cidade=cidade, estado=estado, pais=pais)
             objEndereco.save()
 
         
-        try:
-            objUser =User.objects.get(username=username, password=password1, email=email)
-        except:
+        if(objUser is None):
             objUser = User(username=username, password=password1, email=email)
             objUser.save()
-        
-        try:
-            objUsuario = Usuario.objects.get(telefone_1=telefone1, telefone_2=telefone2, user=objUser, img=imagem)
-        except:
-            objUsuario = Usuario(telefone_1=telefone1, telefone_2=telefone2, user=objUser, img=imagem)
-            objUsuario.save()
+        else:
+            array["erro"] = True
+            array["mensagem"] = "Usuário existente, tente novamente."
+            return render(request,"delivery/cadastroCliente.html", array)
+    
 
-        
-        try:
-            objCliente = Cliente.objects.get(nome=nome, genero=genero, cpf=cpf, idade=idade, usuario=objUsuario, endereco=objEndereco)
-        except:
-            
-            objCliente = Cliente(nome=nome, genero=genero, cpf=cpf, idade=idade, usuario=objUsuario, endereco = objEndereco)
+        objCliente =  Cliente.objects.filter(nome=nome, genero=genero, cpf=cpf, idade=idade, user=objUser, endereco=objEndereco).first()
+
+        if(objCliente is None):
+
+             
+
+            objCliente = Cliente(nome=nome, genero=genero, cpf=cpf, idade=idade, user=objUser, telefone1 = telefone1, telefone2 = telefone2, img = imagem)
             objCliente.save()
+            objCliente.endereco.add(objEndereco)
+        else:
+            
+            array["erro"] = True
+            array["mensagem"] = "Cliente existente, tente novamente."
+            return render(request,"delivery/cadastroCliente.html", array)
         
         return redirect("login")
 

@@ -25,9 +25,7 @@ Cadastro - Cliente
                             <div class="list-group" id="list-tab" role="tablist">
                                 <a class="list-group-item list-group-item-action active" id="list-home-list"
                                     data-toggle="list" href="#list-home" role="tab" aria-controls="home">User</a>
-                                <a class="list-group-item list-group-item-action" id="list-profile-list"
-                                    data-toggle="list" href="#list-profile" role="tab"
-                                    aria-controls="profile">Profile</a>
+                               
                                 <a class="list-group-item list-group-item-action" id="list-messages-list"
                                     data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Dados do Delivery
                                     </a>
@@ -43,10 +41,7 @@ Cadastro - Cliente
                                     aria-labelledby="list-home-list">
                                     {{user|crispy}}
                                 </div>
-                                <div class="tab-pane fade" id="list-profile" role="tabpanel"
-                                    aria-labelledby="list-profile-list">
-                                    {{usuario|crispy}}
-                                </div>
+                                
                                 <div class="tab-pane fade" id="list-messages" role="tabpanel"
                                     aria-labelledby="list-messages-list">
                                     {{delivery|crispy}}

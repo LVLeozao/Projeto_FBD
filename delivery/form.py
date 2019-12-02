@@ -11,20 +11,32 @@ class EnderecoForm(ModelForm):
         model = Endereco
         fields = ("rua", "numero", "complemento", "bairro", "cidade", "estado","pais")
 
-class UsuarioForm(ModelForm):
-    class Meta:
-        model = Usuario
-        fields = ("telefone_1","telefone_2","img")
-
+    
+    
 class ClienteForm(ModelForm):
     class Meta:
         model = Cliente
-        fields = ("nome","genero","cpf", "idade")
+        fields = ("nome","genero","cpf", "idade", "telefone1", "telefone2", "img")
+
+        def clean_cliente(self):
+            nome = self.cleaned_data.get("nome")
+            genero = self.cleaned_data.get("genero")
+            cpf = self.cleaned_data.get("cpf")
+            idade = self.cleaned_data.get("idade")
+            telefone1 = self.cleaned_data.get("telefone1")
+            telefone2 = self.cleaned_data.get("telefone2")
+            
+
+
+            if Cliente.objects.filter(nome = nome, genero = genero, cpf = cpf, idade = idade, telefone1 = telefone1, telefone2 = telefone2).exists():
+                raise forms.ValidationError("Cliente exsitente no banco de dados, tente novamente.")
+        
+            return nome, genero, cpf, idade, telefone1,telefone2
 
 class DeliveryForm(ModelForm):
     class Meta:
         model = Delivery
-        fields = ("nome_restaurante","cnpj","descricao")
+        fields = ("nome_restaurante","cnpj","descricao", "telefone1", "telefone2", "img")
 
 class ProdutoForm(ModelForm):
     class Meta:

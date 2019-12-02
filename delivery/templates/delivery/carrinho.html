@@ -1,0 +1,70 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+
+{% block title %}
+Carrinho - Pede Mais
+{% endblock title %}
+
+
+{% block content %}
+<div class="container" style="padding: 2vh;">
+    {% if objects != "False" %}
+    <table class="table table table-hover table-active">
+        <thead>
+            <tr>
+                <th scope="col">#ID</th>
+                <th scope="col">Produto</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Quantidade</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for obj in objects %}
+            <tr>
+                <th scope="row">{{obj.pk}}</th>
+                <td>{{obj.nome}}</td>
+                <td>{{obj.valor}}</td>
+                <td>{{obj.qnt}}</td>
+            </tr>
+            {% endfor %}
+
+
+
+
+
+        </tbody>
+    </table>
+
+    <b>Valor Total: </b>{{valor}}</br>
+    <b>Quantidade Total: </b>{{qnt}}
+
+    <form action="" method="POST">
+
+        {% csrf_token %}
+
+        <input type="submit" value="Confirmar">
+
+
+    </form>
+
+
+
+    {% else %}
+    <div class="card">
+            <div class="card-header">
+                    <b>Carrinho de compras vazio,</b> 
+            </div>
+            <div class="card-body">
+                    <h5 class="card-title">Seu carrinho de compras encontra-se vazio, adicione novos produtos no 'Menu de
+                            Deliverys'</h5>
+                    
+                    <a class="btn btn-primary" href="{% url 'listDeliverys' %}" role="button">Vamos às compras ?</a>
+            </div>
+    </div>
+    {% endif %}
+</div>
+
+
+{% endblock content %}
+

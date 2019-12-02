@@ -1,0 +1,50 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+
+{% block title %}
+Produtos - Pede Mais
+{% endblock title %}
+
+
+{% block content %}
+<div class="d-flex justify-content-center" style="margin-top: 10vh;">
+    <div class="row">
+        <div class="col-sm-6">
+
+            <div class="card" style="width: 15rem;">
+                <div class="card-header">
+                    <div class="d-flex justify-content-center">
+                        <b>Produtos</b>
+                    </div>
+                </div>
+                <img src="{% static 'img/icons/fastfood-24px.svg' %}" width="5vw" class="card-img-top" alt="...">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-center">
+                        <a type="button" class="btn btn-primary" href="{% url 'cadastroProdutoView'%}">Cadastrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card" style="width: 15rem;">
+                <div class="card-header">
+                    <div class="d-flex justify-content-center">
+                        <b>Listar</b>
+                    </div>
+                </div>
+                <img src="{% static 'img/icons/list_alt-24px.svg' %}" width="5vw" class="card-img-top" alt="...">
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-center">
+                        <a type="button" class="btn btn-primary" href="">Listar</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

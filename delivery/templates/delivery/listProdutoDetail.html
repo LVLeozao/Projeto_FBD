@@ -1,0 +1,51 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+
+{% block title %}
+Detalhe Produto - Pede Mais
+{% endblock title %}
+
+{% block content    %}
+<div class="container" style="padding: 2vh;">
+    <div class="card">
+        <div class="card-header">
+            <h1>{{objects.nome}} </h1>
+        </div>
+
+        <div class="card-body">
+            <h5 class="card-title">{{objects.nome}} <span class="badge badge-pill badge-success">Disponível</span></h5>
+            <p class="card-text">
+
+                <div class="media">
+                    <img class="mr-3" src="{% static 'img/icons/image.svg' %}" width="100vh">
+                </div>
+                <b>Descrição: </b>{{objects.observacoes}}</br>
+                <b>Valor: </b>{{objects.valor}}</br>
+                <b>Categoria: </b>{{objects.categoria_produto}}</br>
+                <b>Validade: </b>{{objects.data_validade}}</br>
+                <b>Peso: </b>{{objects.peso}}g</br>
+
+
+
+
+            </p>
+
+            <form method="GET" action="">
+                {% csrf_token %}
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-light" style="height: 6vh;"><img
+                            src="{% static 'img/icons/add_shopping_cart-24px.svg' %}" width="24vw">
+                    </button>
+                    <div class="form-group" style="width: 10vh;">
+                        <input class="form-control" type="number" name="Quantidade" step="1" required="" id="id_qnt" >
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+{% endblock content %}

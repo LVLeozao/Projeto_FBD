@@ -36,10 +36,11 @@ class Produto(models.Model):
     categoria_produto  = models.CharField(max_length=50, choices=CATEGORIA_CHOICE, verbose_name = "Categoria")
     observacoes = models.TextField()
     data_validade = models.DateTimeField()
-    peso = models.DecimalField(decimal_places=3,max_digits=5, verbose_name="(g)")
+    peso = models.DecimalField(decimal_places=3,max_digits=5, help_text="(g)")
     restaurante = models.ManyToManyField("Delivery", related_name="get_deliverys")
-    pedido = models.ManyToManyField("Pedido", blank=True)
-    img = models.ImageField(help_text="Tamanho máximo 50x50", verbose_name="Imagem")
+    pedido = models.ManyToManyField("Pedido", blank=True, null  = True, related_name="getPedido")
+    img = models.ImageField(help_text="Tamanho máximo 50x50", verbose_name="Imagem", null = True, blank=True)
+    qnt = models.IntegerField(verbose_name="Quantidade", null=True, blank=True)
 
 
     class Meta:
@@ -49,18 +50,10 @@ class Produto(models.Model):
     def __str__(self):
         return self.nome
 
-    def get_pk(self):
-        return self.pk
+    def get_absolute_url(self):
+        return reverse ("listProdutoDetail", args=[self.slug])
 
-class Usuario(models.Model):
-    telefone_1 = models.CharField(max_length=14, help_text="EX.:99999999999999")
-    telefone_2 = models.CharField(max_length=14, null=True, blank=True, help_text="EX.:9999999999999")
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.PROTECT, related_name="get_user")
-    img = models.ImageField(help_text="Tamanho máximo 50x50", verbose_name="Imagem")
-    
-     
-    def __str__(self):
-        return "{}".format(self.user.username)
+
 
 class Cliente(models.Model):
 
@@ -75,9 +68,15 @@ class Cliente(models.Model):
     genero = models.CharField(max_length=1, choices=GENERO_CHOICES)
     cpf = models.CharField(max_length=11, help_text="EX.: 99999999999")
     idade = models.IntegerField()
-    usuario = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.PROTECT, related_name="get_usuario") 
-    endereco = models.OneToOneField(Endereco, on_delete=models.PROTECT)
+    endereco = models.ManyToManyField(Endereco)
     
+    telefone1 = models.CharField(max_length=14, help_text="EX.:99999999999999")
+    telefone2 = models.CharField(max_length=14, null=True, blank=True, help_text="EX.:9999999999999")
+
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.PROTECT, related_name="get_cliente")
+    img = models.ImageField(help_text="Tamanho máximo 50x50", verbose_name="Imagem", null = True, blank=True)
+
+
     class Meta:
         verbose_name_plural = "Clientes"
 
@@ -89,10 +88,17 @@ class Cliente(models.Model):
 class Delivery(models.Model):
     nome_restaurante = models.CharField(max_length=100, help_text="Nome do Delivery: ")
     slug = models.SlugField(max_length=250, help_text="EX.:nome-segundo")
-    usuario = models.OneToOneField(Usuario, null=True, blank=True, on_delete=models.PROTECT, related_name="get_usuarios") 
+    
     cnpj = models.CharField(max_length=18, help_text="99.999.999/9999-99", verbose_name="CNPJ")
-    endereco = models.OneToOneField(Endereco, on_delete=models.PROTECT)
+    endereco = models.ManyToManyField(Endereco)
     descricao = models.TextField(verbose_name="Descrição")
+
+    telefone1 = models.CharField(max_length=14, help_text="EX.:99999999999999")
+    telefone2 = models.CharField(max_length=14, null=True, blank=True, help_text="EX.:9999999999999")
+
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.PROTECT, related_name="get_delivery")
+
+    img = models.ImageField(help_text="Tamanho máximo 50x50", verbose_name="Imagem", null = True, blank=True)
 
     class Meta:
         verbose_name_plural = "Delivery's"
@@ -102,9 +108,16 @@ class Delivery(models.Model):
 
     def get_absolute_url(self):
         return reverse ("listProdutos", args=[self.slug])
+    
+    
 
 
 class Pedido(models.Model):
+
+    STATUS_CHOICE = ( 
+        ("1","Pagamento Pendente"),
+        ("2","Pagamento Realizado"),
+    )
     
     ENTREGA_CHOICE = (
         ("1", "Preparando"),
@@ -112,41 +125,34 @@ class Pedido(models.Model):
         ("3", "Entregue"),
     )
 
-    entregador = models.OneToOneField("Entregador", on_delete=models.PROTECT, null=True,blank=True)
-    pagamento = models.OneToOneField("Pagamento", on_delete = models.PROTECT)
-    quantidade_itens = models.IntegerField(null=True, blank=True)
-    pagamento = models.OneToOneField("Pagamento", on_delete=models.PROTECT, null=True, blank=True)
-    status_pedido = models.BooleanField(default=False)
+    entregador = models.ManyToManyField("Entregador", blank=True , null=True)
+    quantidade_itens = models.IntegerField(blank=True , null=True)
+    status_pedido = models.BooleanField(default=False)  
     entrega = models.CharField(max_length=50, choices=ENTREGA_CHOICE)
-    endereco_entrega = models.ForeignKey(Endereco, on_delete = models.PROTECT)
-
+    endereco_entrega = models.ManyToManyField(Endereco, blank=True , null=True)
+    valor_total = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null = True)
+    cliente = models.OneToOneField(Cliente,  blank=True, null = True, on_delete= models.PROTECT, related_name="getCliente")
+    status_pagamento = models.CharField(max_length=50, choices=STATUS_CHOICE, blank=True, null = True)
+    
     class Meta:
         verbose_name_plural = "Pedidos"
 
     def __str__(self):
-        return self.pk
+        return "Pedido: nº{}".format(self.pk)
 
-class Pagamento(models.Model):
-
-    STATUS_CHOICE = ( 
-        ("1","Pagamento Pendente"),
-        ("2","Pagamento Realizado"),
-    )
-    valor_total = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
-    status = models.CharField(max_length=50, choices=STATUS_CHOICE)
-
-    class Meta:
-        verbose_name_plural = "Pagamentos"
-
-    def __str__(self):
-        return self.pk
 
 class Entregador(models.Model):
     nome = models.CharField(max_length=255)
     slug = models.SlugField(max_length=250, help_text="EX.:nome-segundo")
     cpf = models.CharField(max_length=11, help_text="EX.: 99999999999")
-    usuario = models.OneToOneField(Usuario, null=True, blank=True, on_delete=models.PROTECT) 
-    endereco = models.OneToOneField(Endereco, on_delete=models.PROTECT)
+    
+    telefone1 = models.CharField(max_length=14, help_text="EX.:99999999999999")
+    telefone2 = models.CharField(max_length=14, null=True, blank=True, help_text="EX.:9999999999999")
+
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.PROTECT, related_name="get_entregador")
+    img = models.ImageField(help_text="Tamanho máximo 50x50", verbose_name="Imagem", null = True, blank=True)
+
+    endereco = models.ManyToManyField(Endereco)
     filiado = models.OneToOneField(Delivery, on_delete=models.PROTECT)
     placa_veiculo = models.CharField(max_length=8, verbose_name="Placa do Veículo", help_text="EX.: AAA-9999")
 

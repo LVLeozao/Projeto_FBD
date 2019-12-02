@@ -1,21 +1,28 @@
 {% extends "dashboard.html" %}
 
+
 {% block title %}
 Home - Pede Mais
 {% endblock title %}
 
 
 {% block content %}
-<div class="d-flex justify-content-center" style="margin-top: 2vh;">
+
+
+
+
+
+<div class="d-flex justify-content-center" style="margin-top: 5vh;">
         <div class="jumbotron" style="background-color: #FAF8F0 ;">
-                <h1 class="display-4">Olá, {{user.username}}!</h1>
-                <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra
-                        attention to featured content or information.</p>
+                <h1 class="display-4">Olá, {{cliente.nome}}!</h1>
+                <p class="lead">Delivery de comida nunca foi tão fácil</p>
                 <hr class="my-4">
-                <p>It uses utility classes for typography and spacing to space content out within the larger container.
+                <p>Opções pra qualquer fome e bolso em milhares de restaurantes, descubra um perto de você.
                 </p>
-                <a class="btn btn-primary btn-lg" href="{% url 'listDeliverys' %}" role="button">Vamos as compras ?</a>
+                <a class="btn btn-primary btn-lg" href="{% url 'listDeliverys' %}" role="button">Vamos às compras ?</a>
         </div>
 </div>
 
 {% endblock content %}
+
+

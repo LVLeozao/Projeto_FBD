@@ -19,7 +19,7 @@
         {% endblock title %}
     </title>
 
-    
+
 </head>
 
 <body>
@@ -33,23 +33,30 @@
 
         <div class="d-flex flex-row-reverse bd-highlight">
             <div class="p-1 bd-highlight">
-                    <div class="btn-group dropleft">
-                            <button type="button" class="btn btn-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="{% static 'img/icons/person_pin-24px.svg' %}" width="24vh">
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="#">Action</a>
-                              <a class="dropdown-item" href="#">Another action</a>
-                              
-                              <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-                            </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-light" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <img src="{% static 'img/icons/person_pin-24px.svg' %}" width="24vh">
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#">Action</a>
+                        {% for i in user.get_all_permissions %}
+                        {% if i == 'delivery.add_produto' %}
+                        <a class="dropdown-item" href="{% url 'produtoView' %}"> Produto</a>
+                        <a class="dropdown-item" href="#"> Entregador</a>
+                        {% endif %}
+                        {% endfor %}
+
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                     </div>
+                </div>
             </div>
             <div class="p-1 bd-highlight">
-                <button type="button" class="btn btn-light">
+                <a type="button" class="btn btn-light" href="{% url 'carrinhoView' %}">
                     <img src="{% static 'img/icons/cart.svg' %}" width="24vh">
-                </button>
+                </a>
             </div>
             <div class="p-1 bd-highlight">
                 <a type="button" class="btn btn-light" href="{% url 'listDeliverys' %}">
@@ -68,9 +75,8 @@
 
     </div>
 
+
+
 </body>
 
 </html>
-
-
-
