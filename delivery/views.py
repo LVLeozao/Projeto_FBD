@@ -30,6 +30,8 @@ def PedidoDeliveryView(request):
         valorTotal, qntTotal = calcularValor(produtos)
         array["valor"] = valorTotal
         array["qnt"] = qntTotal
+        array["endereco"] = cliente.endereco.first()
+        array["cliente"] = cliente
 
     except :
         array["objects"] = "False"
