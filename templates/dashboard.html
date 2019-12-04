@@ -21,7 +21,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    
+
     <title>
         {% block title%}
         {% endblock title %}
@@ -49,12 +49,13 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#">Action</a>
-                        {% for i in user.get_all_permissions %}
-                        {% if i == 'delivery.add_produto' %}
+
+                        {% if type != 'c' %}
+
                         <a class="dropdown-item" href="{% url 'produtoView' %}"> Produto</a>
                         <a class="dropdown-item" href="#"> Entregador</a>
+
                         {% endif %}
-                        {% endfor %}
 
 
                         <div class="dropdown-divider"></div>
@@ -62,11 +63,25 @@
                     </div>
                 </div>
             </div>
+            {% if type == 'c' %}
             <div class="p-1 bd-highlight">
-                <a type="button" class="btn btn-light" href="{% url 'carrinhoView' %}">
-                    <img src="{% static 'img/icons/cart.svg' %}" width="24vh">
-                    Carrinho
-                </a>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-light" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <img src="{% static 'img/icons/cart.svg' %}" width="24vh">
+                        Sacola de compras
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+
+                        <a type="button" class="dropdown-item" href="{% url 'carrinhoView' %}">
+                            Pedido
+                        </a>
+
+                        <a class="dropdown-item" href="#">Histórico de pedidos</a>
+
+                    </div>
+                </div>
             </div>
             <div class="p-1 bd-highlight">
                 <a type="button" class="btn btn-light" href="{% url 'listDeliverys' %}">
@@ -74,17 +89,19 @@
                     Delivery's
                 </a>
             </div>
-
+            {% endif %}
 
         </div>
     </nav>
 
     <div id="teste">
-        
+
         {% block content %}
         {% endblock content %}
 
     </div>
+
+
 
 
 

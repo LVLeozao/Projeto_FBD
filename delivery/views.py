@@ -4,7 +4,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.urls import reverse, reverse_lazy
 from .form import *
+
 from django.contrib.auth.models import User
+
+
+
+def getGroup(pk):
+    grupo = User.objects.get(id = pk).groups.all().first().__str__()
+
+    return "c" if grupo == "Cliente" else "d"
 
 def calcularValor(produtos):
     valorTotal = 0
@@ -17,35 +25,37 @@ def calcularValor(produtos):
 
 def PedidoDeliveryView(request):
     template_name = "delivery/carrinho.html"
+    array={}
+    array['type'] = getGroup(request.user.pk)
 
-    array = {}
+    # array = {}
 
-    user = User.objects.get(id = request.user.pk)
-    cliente = user.get_cliente.all().first()
+    # user = User.objects.get(id = request.user.pk)
+    # cliente = user.get_cliente.all().first()
 
-    try :
-        pedido = Pedido.objects.get(cliente = cliente, status_pedido = False)
-        produtos = Produto.objects.filter(pedido = pedido).all()
-        array["objects"] = produtos
-        valorTotal, qntTotal = calcularValor(produtos)
-        array["valor"] = valorTotal
-        array["qnt"] = qntTotal
-        array["endereco"] = cliente.endereco.first()
-        array["cliente"] = cliente
+    # try :
+    #     pedido = Pedido.objects.get(cliente = cliente, status_pedido = False)
+    #     produtos = Produto.objects.filter(pedido = pedido).all()
+    #     array["objects"] = produtos
+    #     valorTotal, qntTotal = calcularValor(produtos)
+    #     array["valor"] = valorTotal
+    #     array["qnt"] = qntTotal
+    #     array["endereco"] = cliente.endereco.first()
+    #     array["cliente"] = cliente
 
-    except :
-        array["objects"] = "False"
+    # except :
+    #     array["objects"] = "False"
 
 
-    if request.POST:
+    # if request.POST:
 
-        pedido.quantidade_itens = qntTotal
-        pedido.status_pedido = True
-        pedido.valor_total = valorTotal
+    #     pedido.quantidade_itens = qntTotal
+    #     pedido.status_pedido = True
+    #     pedido.valor_total = valorTotal
 
-        pedido.save()
+    #     pedido.save()
 
-        return redirect("home")
+    #     return redirect("home")
     
     
 
@@ -57,10 +67,17 @@ def PedidoDeliveryView(request):
 
         
 
-class ListDeliveryView(ListView):
-    model = Delivery
+def ListDeliveryView(request):
+    array = {}
+    array["objects"] = Delivery.objects.all()
+    array['type'] = getGroup(request.user.pk)
+
     template_name = "delivery/listDeliverys.html"
-    context_object_name = "objects"
+
+
+
+    return render(request, template_name, array)
+    
 
 
 
@@ -77,12 +94,10 @@ class ProdutosListView(ListView):
 
 def HomeView(request):
         user = User.objects.get(id = request.user.pk)
-        cliente = user.get_cliente.all().first()
-
+        cliente = user.getCliente.all().first()
         array = {}
         array["cliente"] = cliente
-
-
+        array['type'] = getGroup(request.user.pk)
         return render(request, "delivery/home.html", array)
     
 class cadastroProduto(CreateView):

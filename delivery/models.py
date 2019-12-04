@@ -53,11 +53,6 @@ class Endereco(models.Model):
     def __str__(self):
         return self.rua
 
-
-
-
-
-
 class Cliente(models.Model):
 
     GENERO_CHOICES = (
@@ -85,8 +80,6 @@ class Cliente(models.Model):
     def __str__(self):
         return self.nome
 
-
-
 class Delivery(models.Model):
     nome_restaurante = models.CharField(max_length=100, help_text="Nome do Delivery: ")
     slug = models.SlugField(max_length=250, help_text="EX.:nome-segundo")
@@ -108,12 +101,6 @@ class Delivery(models.Model):
     def get_absolute_url(self):
         return reverse ("listProdutos", args=[self.slug])
     
-    
-
-
-
-
-
 class Entregador(models.Model):
     nome = models.CharField(max_length=255)
     slug = models.SlugField(max_length=250, help_text="EX.:nome-segundo")
@@ -140,6 +127,7 @@ class ProdutoPedido(models.Model):
     id_produto = models.IntegerField()
     id_pedido = models.IntegerField()
     quantidade_itens = models.IntegerField(verbose_name="Quantidade", null=True, blank=True)
+
 class Pagamento(models.Model):
 
     STATUS_CHOICE = ( 
@@ -151,10 +139,8 @@ class Pagamento(models.Model):
     qntItensTotal = models.IntegerField(blank=True , null=True)
     status_pagamento = models.CharField(max_length=50, choices=STATUS_CHOICE, blank=True, null = True)
     valor_total = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null = True)
-class Pedido(models.Model):
 
-    
-    
+class Pedido(models.Model):
     ENTREGA_CHOICE = (
         ("1", "Preparando"),
         ("2", "A Caminho"),
@@ -205,7 +191,6 @@ class Produto(models.Model):
 
     def get_absolute_url(self):
         return reverse ("listProdutoDetail", args=[self.slug])
-
 
 
 @receiver(post_save, sender = Produto)

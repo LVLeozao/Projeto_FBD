@@ -9,68 +9,82 @@ Delivery's - Pede Mais
 {% block content %}
 
 
-<!-- <div class="container">
-    {% for delivery in objects %}
-    <div class="accordion" id="accordionExample">
-        <div class="card">
-            <div class="card-header" id="headingOne">
-                <h2 class="mb-0">
-                    <button class="btn btn-link" type="button" data-toggle="collapse"
-                        data-target="#{{delivery.usuario}}" aria-expanded="false" aria-controls="{{delivery.usuario}}">
-                        {{delivery.nome_restaurante}}
-                    </button>
-                </h2>
-            </div>
-
-            <div id="{{delivery.usuario}}" class="collapse show" aria-labelledby="headingOne"
-                data-parent="#accordionExample">
-                <div class="card-body">
-
-                    <div class="media">
-                        <img src="{% static 'img/047.svg' %}" class="mr-3" width="50px">
-
-                        <div class="media-body">
-                            <h5 class="mt-0">{{delivery.nome_restaurante}}</h5>
-                            <p>{{delivery.descricao}}</p>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-info">Acessar</a>
-                            </div>
-                        </div>
-                    </div>
 
 
-
-                </div>
-            </div>
-        </div>
-    </div>
-    </br>
-    {% endfor %} -->
 <div class="container" style="width: 70vw;">
     {% for delivery in objects %}
-        <div class="list-group" style="padding: 4px;">
+    <div class="list-group" style="padding: 3vh;">
 
-            <a href="{{delivery.get_absolute_url}}" class="list-group-item list-group-item-action">
-                <div class="media">
-                    <img src="{% static 'img/icons/image.svg' %}" class="align-self-center mr-3" width="40px">
-                    <div class="media-body">
-                        <h5 class="mt-0">{{delivery.nome_restaurante}}</h5>
-                        <p>{{delivery.descricao}}</p>
+        <a href="{{delivery.get_absolute_url}}" class="list-group-item list-group-item-action">
+            <div class="media">
+                <img src="{% static 'img/icons/image.svg' %}" class="align-self-center mr-3" width="40px">
+                <div class="media-body">
+                    <h5 class="mt-0">{{delivery.nome_restaurante}}</h5>
+                    <p>{{delivery.descricao}}</p>
 
-                    </div>
                 </div>
-            </a>
+            </div>
+        </a>
 
-        </div>
-    
+    </div>
+
     {% endfor %}
 
 </div>
+
+<div style="position:absolute; padding: 1vw; margin-left: 93vw; margin-top: -20vh;">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModal">
+        <img src="{% static 'img/icons/search.svg' %}" width="24vw">
+    </button>
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="exampleModalLabel">Mudar Localização</h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Estado</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            placeholder="Ex.: Pernambuco">
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Cidade</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            placeholder="Ex.: Afogados da Ingazeira">
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
+                    <button type="button" class="btn btn-primary">Alterar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 
 
 
 {% endblock content %}
-
-
