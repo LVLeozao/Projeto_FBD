@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.urls import reverse, reverse_lazy
 from .form import *
+from django.http import HttpResponse
 
 from django.contrib.auth.models import User
 
@@ -71,25 +72,74 @@ def ListDeliveryView(request):
     array = {}
     array["objects"] = Delivery.objects.all()
     array['type'] = getGroup(request.user.pk)
-
+    array['erro'] = "false"
+    array["buscar_cidade"] = "true"
     template_name = "delivery/listDeliverys.html"
 
+    if request.POST:
+        
+        
+
+        try:
+            cidade = request.POST['cidade']
+            estado = request.POST['estado']
+            querys = []
+            endereco = Endereco.objects.filter(cidade= cidade , estado = estado).all()
+            rest = []
+
+            for end in endereco:
+                querys.append(end)
+            
+            for query in querys:
+                for x in query.getEnderecos.all():
+                    rest.append(x)
+            
+            
+
+            array["objects"] = rest
+            array['type'] = getGroup(request.user.pk)
+            array['erro'] = "false"
+            array["buscar_cidade"] = "true"
+
+            
+
+        except:
+
+            array["objects"] = Delivery.objects.all()
+            array['type'] = getGroup(request.user.pk)
+            array["buscar_cidade"] = "true"                
+            array['erro'] = "true"
+
+
+        return render(request, template_name, array)
+                
 
 
     return render(request, template_name, array)
     
 
 
-
-class ProdutosListView(ListView):
-    model = Produto
+def ProdutosListView(request, slug):
     template_name = "delivery/listProdutos.html"
-    context_object_name = "objects"
+    array = {}
+    
+    
+    array["objects"] = Delivery.objects.get(slug=slug).getDeliverys.all()
+    array['type'] = getGroup(request.user.pk)
 
-    def get_queryset(self, *args, **kwargs):
-        delivery = Delivery.objects.get(slug=self.kwargs['slug'])
-        produtos = delivery.get_deliverys.all()
-        return produtos
+    
+
+    return render(request, template_name, array)
+
+# class ProdutosListView(ListView):
+#     model = Produto
+    
+#     context_object_name = "objects"
+
+#     def get_queryset(self, *args, **kwargs):
+#         delivery = Delivery.objects.get(slug=self.kwargs['slug'])
+#         produtos = delivery.getDeliverys.all()
+#         return produtos
 
 
 def HomeView(request):

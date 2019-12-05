@@ -8,14 +8,28 @@ Delivery's - Pede Mais
 
 {% block content %}
 
+{% if erro == 'true' %}
+
+<div class = "container" style = "position: relative; padding: 1vw;">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class = "d-flex justify-content-center"> 
+            <strong>Dados inseridos nos campos de busca estão inválidos, tente novamente.</strong> 
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
 
 
+{% endif %}
 
-<div class="container" style="width: 70vw;">
+
+<div class="container" style="width: 70vw; padding: 3vh;">
     {% for delivery in objects %}
-    <div class="list-group" style="padding: 3vh;">
+    <div class="list-group" >
 
-        <a href="{{delivery.get_absolute_url}}" class="list-group-item list-group-item-action">
+        <a href="{{delivery.get_absolute_url}}" class="list-group-item list-group-item-action" >
             <div class="media">
                 <img src="{% static 'img/icons/image.svg' %}" class="align-self-center mr-3" width="40px">
                 <div class="media-body">
@@ -28,61 +42,18 @@ Delivery's - Pede Mais
 
     </div>
 
+    <div style="padding: 2px;" ></div>
+
     {% endfor %}
 
 </div>
 
-<div style="position:absolute; padding: 1vw; margin-left: 93vw; margin-top: -20vh;">
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModal">
-        <img src="{% static 'img/icons/search.svg' %}" width="24vw">
-    </button>
-</div>
 
 
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
 
-            <div class="modal-header">
-
-                <h5 class="modal-title" id="exampleModalLabel">Mudar Localização</h5>
-
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" action="">
-                <div class="modal-body">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Estado</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                            placeholder="Ex.: Pernambuco">
-
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Cidade</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                            placeholder="Ex.: Afogados da Ingazeira">
-
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
-                    <button type="button" class="btn btn-primary">Alterar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 
 

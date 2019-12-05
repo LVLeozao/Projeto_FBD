@@ -3,4 +3,4 @@ lista = [{"id":11,"sigla":"RO","nome":"Rondônia","regiao":{"id":1,"sigla":"N","
 
 
 for i in lista:
-    print("('{}', '{}'),".format(i['id'],i['nome']))
+    print("('{}', '{}'),".format(i['nome'],i['nome']))

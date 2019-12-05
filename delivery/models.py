@@ -8,33 +8,33 @@ from django.urls import reverse
 
 class Endereco(models.Model):
     ESTADO_CHOICE = (
-        ('11', 'Rondônia'),
-        ('12', 'Acre'),
-        ('13', 'Amazonas'),
-        ('14', 'Roraima'),
-        ('15', 'Pará'),
-        ('16', 'Amapá'),
-        ('17', 'Tocantins'),
-        ('21', 'Maranhão'),
-        ('22', 'Piauí'),
-        ('23', 'Ceará'),
-        ('24', 'Rio Grande do Norte'),
-        ('25', 'Paraíba'),
-        ('26', 'Pernambuco'),
-        ('27', 'Alagoas'),
-        ('28', 'Sergipe'),
-        ('29', 'Bahia'),
-        ('31', 'Minas Gerais'),
-        ('32', 'Espírito Santo'),
-        ('33', 'Rio de Janeiro'),
-        ('35', 'São Paulo'),
-        ('41', 'Paraná'),
-        ('42', 'Santa Catarina'),
-        ('43', 'Rio Grande do Sul'),
-        ('50', 'Mato Grosso do Sul'),
-        ('51', 'Mato Grosso'),
-        ('52', 'Goiás'),
-        ('53', 'Distrito Federal'),
+        ('Rondônia', 'Rondônia'),
+        ('Acre', 'Acre'),
+        ('Amazonas', 'Amazonas'),
+        ('Roraima', 'Roraima'),
+        ('Pará', 'Pará'),
+        ('Amapá', 'Amapá'),
+        ('Tocantins', 'Tocantins'),
+        ('Maranhão', 'Maranhão'),
+        ('Piauí', 'Piauí'),
+        ('Ceará', 'Ceará'),
+        ('Rio Grande do Norte', 'Rio Grande do Norte'),
+        ('Paraíba', 'Paraíba'),
+        ('Pernambuco', 'Pernambuco'),
+        ('Alagoas', 'Alagoas'),
+        ('Sergipe', 'Sergipe'),
+        ('Bahia', 'Bahia'),
+        ('Minas Gerais', 'Minas Gerais'),
+        ('Espírito Santo', 'Espírito Santo'),
+        ('Rio de Janeiro', 'Rio de Janeiro'),
+        ('São Paulo', 'São Paulo'),
+        ('Paraná', 'Paraná'),
+        ('Santa Catarina', 'Santa Catarina'),
+        ('Rio Grande do Sul', 'Rio Grande do Sul'),
+        ('Mato Grosso do Sul', 'Mato Grosso do Sul'),
+        ('Mato Grosso', 'Mato Grosso'),
+        ('Goiás', 'Goiás'),
+        ('Distrito Federal', 'Distrito Federal'),
     )
 
 
@@ -84,7 +84,7 @@ class Delivery(models.Model):
     nome_restaurante = models.CharField(max_length=100, help_text="Nome do Delivery: ")
     slug = models.SlugField(max_length=250, help_text="EX.:nome-segundo")
     cnpj = models.CharField(max_length=18, help_text="99.999.999/9999-99", verbose_name="CNPJ")
-    endereco = models.ManyToManyField(Endereco)
+    endereco = models.ManyToManyField(Endereco, related_name="getEnderecos")
     descricao = models.TextField(verbose_name="Descrição")
     telefone1 = models.CharField(max_length=14, help_text="EX.:(99)99999-9999")
     telefone2 = models.CharField(max_length=13, null=True, blank=True, help_text="EX.:(87)3333-3333")

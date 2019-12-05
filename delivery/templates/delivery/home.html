@@ -8,70 +8,77 @@ Home - Pede Mais
 
 {% block content %}
 
-<!-- <div class="d-flex justify-content-center" style="margin-top: 5vh;">
-        <div class="jumbotron" style="background-color: #FAF8F0 ;">
-                <h1 class="display-4">Olá, {{cliente.nome}}!</h1>
-                <p class="lead">Delivery de comida nunca foi tão fácil</p>
-                <hr class="my-4">
-                <p>Opções pra qualquer fome e bolso em milhares de restaurantes, descubra um perto de você.
-                </p>
-                <a class="btn btn-primary btn-lg" href="{% url 'listDeliverys' %}" role="button">Vamos às compras ?</a>
-        </div>
-</div> -->
 
-<div class="container" style=" margin-top:10vh;width: 60vw; height: 50vh;">
+<div class="container" style=" padding: 1vh;">
+        <div class="card mb-3">
 
-        <div class="bd-example">
-                <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                                <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-                                <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-                                <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
-                        </ol>
-                        <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                        <div class="d-flex justify-content-center">
-                                                <img src="{% static 'img/foto2.jpg' %}"
-                                                        class="d-block w-80" alt="...">
-                                        </div>
-                                        <div class="carousel-caption d-none d-md-block">
-                                                <h5>First slide label</h5>
-                                                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                        </div>
-                                </div>
-                                <div class="carousel-item">
-                                                <div class="d-flex justify-content-center">
-                                                                <img src="{% static 'img/foto1.jpg' %}"
+                <div class="container" style="width: 50vw; padding: 2vh;">
+
+                        <div class="bd-example">
+                                <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+                                        <ol class="carousel-indicators">
+                                                <li data-target="#carouselExampleCaptions" data-slide-to="0"
+                                                        class="active"></li>
+                                                <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+                                                <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+                                        </ol>
+                                        <div class="carousel-inner">
+                                                <div class="carousel-item active">
+                                                        <div class="d-flex justify-content-center">
+                                                                <img class="rounded-lg"
+                                                                        src="{% static 'img/foto2.jpg' %}"
                                                                         class="d-block w-80" alt="...">
                                                         </div>
-                                        <div class="carousel-caption d-none d-md-block">
-                                                <h5>Second slide label</h5>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                        </div>
-                                </div>
-                                <div class="carousel-item">
-                                                <div class="d-flex justify-content-center">
-                                                                <img src="{% static 'img/foto3.jpg' %}"
+
+                                                </div>
+                                                <div class="carousel-item">
+                                                        <div class="d-flex justify-content-center">
+                                                                <img class="rounded-lg"
+                                                                        src="{% static 'img/foto1.jpg' %}"
                                                                         class="d-block w-80" alt="...">
                                                         </div>
-                                        <div class="carousel-caption d-none d-md-block">
-                                                <h5>Third slide label</h5>
-                                                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+
+                                                </div>
+                                                <div class="carousel-item">
+                                                        <div class="d-flex justify-content-center">
+                                                                <img class="rounded-lg"
+                                                                        src="{% static 'img/foto3.jpg' %}"
+                                                                        class="d-block w-80" alt="...">
+                                                        </div>
+
+                                                </div>
                                         </div>
+                                        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button"
+                                                data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button"
+                                                data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                        </a>
                                 </div>
                         </div>
-                        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button"
-                                data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button"
-                                data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                        </a>
+
+                </div>
+
+                <div class="card-body">
+                        <h5 class="card-title">Pede Mais</h5>
+                        <p class="card-text">
+                                <b>Pede Mais</b> é uma site brasileiro fundado em 2019, atuante no ramo de entrega de
+                                comida e seu principal objetivo é prover aos donos de deliverys alimenticias
+                                uma plataforma em que eles possam hospedar seus negocios de maneira
+                                gratis e intuitiva.</p>
+                        <div class="d-flex justify-content-center">
+                                <p class="copyright text-muted" ><small class="text-muted">&copy; Leonardo
+                                                Veras</small></p>
+                        </div>
                 </div>
         </div>
 </div>
+
+
+
 
 {% endblock content %}
