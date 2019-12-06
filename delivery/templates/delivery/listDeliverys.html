@@ -10,10 +10,10 @@ Delivery's - Pede Mais
 
 {% if erro == 'true' %}
 
-<div class = "container" style = "position: relative; padding: 1vw;">
+<div class="container" style="position: relative; padding: 1vw;">
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <div class = "d-flex justify-content-center"> 
-            <strong>Dados inseridos nos campos de busca estão inválidos, tente novamente.</strong> 
+        <div class="d-flex justify-content-center">
+            <strong>Dados inseridos nos campos de busca estão inválidos, tente novamente.</strong>
         </div>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -26,36 +26,48 @@ Delivery's - Pede Mais
 
 
 <div class="container" style="width: 70vw; padding: 3vh;">
-    {% for delivery in objects %}
-    <div class="list-group" >
+    <!-- {% for delivery in objects %}
+    <div class="card">
 
-        <a href="{{delivery.get_absolute_url}}" class="list-group-item list-group-item-action" >
-            <div class="media">
-                <img src="{% static 'img/icons/image.svg' %}" class="align-self-center mr-3" width="40px">
-                <div class="media-body">
-                    <h5 class="mt-0">{{delivery.nome_restaurante}}</h5>
-                    <p>{{delivery.descricao}}</p>
-
-                </div>
-            </div>
-        </a>
-
+        <a href="{{delivery.get_absolute_url}}"><h5 class="card-header"></h5></a>
+        
+        <div class="card-body">
+            <p>{{delivery.descricao}}</p>
+            <img src="{% static 'img/icons/image.svg' %}" class="align-self-start mr-3" alt="...">
+        </div>
     </div>
 
-    <div style="padding: 2px;" ></div>
+    {% endfor %} -->
+    {% for delivery in objects %}
+    <div class="card">
+        {% if delivery.is_ativo %}
+            <h5 class="card-header">{{delivery.nome_restaurante}} <span class="badge badge-success">Ativo</span></h5>
+        {% else %}
+            <h5 class="card-header">{{delivery.nome_restaurante}} <span class="badge badge-danger">Inativo</span></h5>
+        {% endif %}
+        <div class="card-body">
+            <div class="media">
+                <div class="media-body">
+                    <h5 class="mt-0 mb-1">Descrição:</h5>
+                    <p>{{delivery.descricao}}</p>
+
+                    <h5 class="mt-0 mb-1">Telefone:</h5>
+                    <p>{{delivery.telefone1}}</p>
+                </div>
+                <img src="{% static 'img/icons/image.svg' %}" width="100vw" class="ml-3" alt="...">
+            </div>
+            {% if delivery.is_ativo %}
+                <div class="d-flex justify-content-end" style="margin-top: 1vw;">
+                    <a href="{{delivery.get_absolute_url}}" class="btn btn-primary">Acessar</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    </br>
 
     {% endfor %}
 
 </div>
-
-
-
-
-
-
-
-
-
 
 
 {% endblock content %}

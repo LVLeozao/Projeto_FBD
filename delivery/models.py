@@ -62,7 +62,7 @@ class Cliente(models.Model):
     )
 
     nome = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=250, help_text="EX.:nome-segundo", null = True, blank=True)
+    slug = models.SlugField(max_length=250, null = True, blank=True)
     genero = models.CharField(max_length=1, choices=GENERO_CHOICES)
     cpf = models.CharField(max_length=11, help_text="EX.: 99999999999")
     idade = models.IntegerField()
@@ -82,14 +82,15 @@ class Cliente(models.Model):
 
 class Delivery(models.Model):
     nome_restaurante = models.CharField(max_length=100, help_text="Nome do Delivery: ")
-    slug = models.SlugField(max_length=250, help_text="EX.:nome-segundo")
+    slug = models.SlugField(max_length=250, null = True, blank=True)
     cnpj = models.CharField(max_length=18, help_text="99.999.999/9999-99", verbose_name="CNPJ")
-    endereco = models.ManyToManyField(Endereco, related_name="getEnderecos")
+    endereco = models.ForeignKey(Endereco,on_delete = models.PROTECT, related_name="getEnderecos")
     descricao = models.TextField(verbose_name="Descrição")
     telefone1 = models.CharField(max_length=14, help_text="EX.:(99)99999-9999")
     telefone2 = models.CharField(max_length=13, null=True, blank=True, help_text="EX.:(87)3333-3333")
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.PROTECT, related_name="getDelivery")
     img = models.ImageField(help_text="Tamanho máximo 50x50", verbose_name="Imagem", null = True, blank=True)
+    is_ativo = models.BooleanField(verbose_name="Ativo", default=False)
 
     class Meta:
         verbose_name_plural = "Delivery's"
@@ -164,9 +165,9 @@ class Pedido(models.Model):
 class Produto(models.Model):
 
     CATEGORIA_CHOICE = (
-        ("refeicao", "Refeição"),
-        ("bebida", "Bebida"),
-        ("sobremesas", "Sobremesa"),
+        ("doce", "Doces"),
+        ("salgados", "Salgados"),
+        ("bebidas", "Bebidas"),
     )
 
     nome = models.CharField(max_length=255)

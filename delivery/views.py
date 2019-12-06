@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 def getGroup(pk):
     grupo = User.objects.get(id = pk).groups.all().first().__str__()
 
-    return "c" if grupo == "Cliente" else "d"
+    return "c" if grupo == "Clientes" else "d"
 
 def calcularValor(produtos):
     valorTotal = 0
@@ -23,6 +23,9 @@ def calcularValor(produtos):
         qntTotal+=x.qnt
     
     return valorTotal,  qntTotal
+
+    
+    
 
 def PedidoDeliveryView(request):
     template_name = "delivery/carrinho.html"
@@ -81,33 +84,27 @@ def ListDeliveryView(request):
         
 
         try:
-            cidade = request.POST['cidade']
-            estado = request.POST['estado']
+
+            endereco = Endereco.objects.filter(cidade = request.POST["cidade"] , estado = request.POST["estado"]).all()
             querys = []
-            endereco = Endereco.objects.filter(cidade= cidade , estado = estado).all()
             rest = []
 
             for end in endereco:
                 querys.append(end)
-            
+                    
             for query in querys:
                 for x in query.getEnderecos.all():
                     rest.append(x)
-            
-            
 
             array["objects"] = rest
-            array['type'] = getGroup(request.user.pk)
-            array['erro'] = "false"
-            array["buscar_cidade"] = "true"
+
 
             
 
         except:
 
             array["objects"] = Delivery.objects.all()
-            array['type'] = getGroup(request.user.pk)
-            array["buscar_cidade"] = "true"                
+                          
             array['erro'] = "true"
 
 
