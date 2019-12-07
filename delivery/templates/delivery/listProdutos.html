@@ -24,7 +24,7 @@ Produtos - Pede Mais
             <tr>
                 <th scope="row"><img src="{% static 'img/icons/image.svg' %}" class="align-self-center mr-3"
                         width="40px"></th>
-                <td><a href="{{obj.get_absolute_url}}">{{obj.nome}}</a></td>
+                <td><h4><a style = "color:black" href="{{obj.get_absolute_url}}">{{obj.nome}}</a></h4</td>
                 <td>{{obj.observacoes}}</td>
                 <td>{{obj.peso}}</td>
                 <td>{{obj.valor}}</td>
@@ -40,4 +40,3 @@ Produtos - Pede Mais
 {% endblock content %}
 
 
-<!-- <img src="{% static 'img/icons/remove_circle-24px.svg' %}" width="24px"> -->

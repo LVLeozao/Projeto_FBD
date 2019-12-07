@@ -11,3 +11,5 @@ admin.site.register(Produto)
 admin.site.register(Entregador)
 admin.site.register(ProdutoPedido)
 
+admin.site.register(Pagamento)
+

@@ -124,11 +124,6 @@ class Entregador(models.Model):
     def __str__(self):
         return self.nome
 
-class ProdutoPedido(models.Model):
-    id_produto = models.IntegerField()
-    id_pedido = models.IntegerField()
-    quantidade_itens = models.IntegerField(verbose_name="Quantidade", null=True, blank=True)
-
 class Pagamento(models.Model):
 
     STATUS_CHOICE = ( 
@@ -141,6 +136,17 @@ class Pagamento(models.Model):
     status_pagamento = models.CharField(max_length=50, choices=STATUS_CHOICE, blank=True, null = True)
     valor_total = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null = True)
 
+
+    
+
+class ProdutoPedido(models.Model):
+    id_produto = models.ForeignKey("Produto", on_delete=models.PROTECT)
+    id_pedido = models.ForeignKey("Pedido", on_delete=models.PROTECT)
+    quantidade_itens = models.IntegerField(verbose_name="Quantidade", null=True, blank=True)
+
+    def __str__(self):
+        return "Pedido: {}, Produto: {}".format(self.id_pedido.id, self.id_protudo.id)
+
 class Pedido(models.Model):
     ENTREGA_CHOICE = (
         ("1", "Preparando"),
@@ -149,11 +155,11 @@ class Pedido(models.Model):
     )
 
     entregador = models.ForeignKey(Entregador, on_delete = models.PROTECT, blank=True , null=True)
-    status_pedido = models.BooleanField(default=False)  
-    entrega = models.CharField(max_length=50, choices=ENTREGA_CHOICE)
+    status_pedido = models.BooleanField(default=False, verbose_name="Foi Finalizdo?")  # Se true foi finalizado, se false ainda ativo
+    entrega = models.CharField(max_length=50, choices=ENTREGA_CHOICE, blank=True , null=True)
     endereco_entrega = models.ManyToManyField(Endereco, blank=True , null=True)
     cliente = models.ForeignKey(Cliente,  blank=True, null = True, on_delete= models.PROTECT, related_name="getCliente")
-    
+    pagamento = models.ForeignKey(Pagamento, on_delete=models.PROTECT, blank=True , null=True)
     
 
     class Meta:
@@ -178,7 +184,6 @@ class Produto(models.Model):
     data_validade = models.DateTimeField()
     peso = models.DecimalField(decimal_places=3,max_digits=5, help_text="(g)")
     restaurante = models.ManyToManyField(Delivery, related_name="getDeliverys")
-    id_produto_pedido = models.ForeignKey(ProdutoPedido, on_delete= models.PROTECT, blank=True, null  = True, related_name="getPedido")
     img = models.ImageField(help_text="Tamanho máximo 50x50", verbose_name="Imagem", null = True, blank=True)
     
 
@@ -192,6 +197,8 @@ class Produto(models.Model):
 
     def get_absolute_url(self):
         return reverse ("listProdutoDetail", args=[self.slug])
+
+
 
 
 @receiver(post_save, sender = Produto)

@@ -32,34 +32,6 @@ def PedidoDeliveryView(request):
     array={}
     array['type'] = getGroup(request.user.pk)
 
-    # array = {}
-
-    # user = User.objects.get(id = request.user.pk)
-    # cliente = user.get_cliente.all().first()
-
-    # try :
-    #     pedido = Pedido.objects.get(cliente = cliente, status_pedido = False)
-    #     produtos = Produto.objects.filter(pedido = pedido).all()
-    #     array["objects"] = produtos
-    #     valorTotal, qntTotal = calcularValor(produtos)
-    #     array["valor"] = valorTotal
-    #     array["qnt"] = qntTotal
-    #     array["endereco"] = cliente.endereco.first()
-    #     array["cliente"] = cliente
-
-    # except :
-    #     array["objects"] = "False"
-
-
-    # if request.POST:
-
-    #     pedido.quantidade_itens = qntTotal
-    #     pedido.status_pedido = True
-    #     pedido.valor_total = valorTotal
-
-    #     pedido.save()
-
-    #     return redirect("home")
     
     
 
@@ -128,15 +100,6 @@ def ProdutosListView(request, slug):
 
     return render(request, template_name, array)
 
-# class ProdutosListView(ListView):
-#     model = Produto
-    
-#     context_object_name = "objects"
-
-#     def get_queryset(self, *args, **kwargs):
-#         delivery = Delivery.objects.get(slug=self.kwargs['slug'])
-#         produtos = delivery.getDeliverys.all()
-#         return produtos
 
 
 def HomeView(request):
@@ -160,29 +123,28 @@ def ProdutoDetailView(request, slug):
     template_name = "delivery/listProdutoDetail.html"
     array = {}
     array["objects"] = Produto.objects.get(slug = slug)
+    array['type'] = getGroup(request.user.pk)
 
-    if request.GET:
+    if request.POST:
 
-        user = User.objects.get(id = request.user.pk)
-        cliente = user.get_cliente.all().first()
-
+        cliente = request.user.getCliente.first()
         
-        
-        try:
-            produto = Produto.objects.filter(slug = slug).first()
-            pedido = Pedido.objects.filter(cliente = cliente, status_pedido = False).first()
-            
-            produto.pedido.add(pedido) 
-            produto.qnt = request.GET["Quantidade"]
-            produto.save()
-            return redirect("carrinhoView")
+        pedidoAtivo = Pedido.objects.filter(status_pedido=False, cliente = cliente).first()
 
-        except:
+        if pedidoAtivo is not None:
             produto = Produto.objects.get(slug = slug)
-            pedido  = Pedido()
-            produto.pedido = pedido
+            produto_pedido = ProdutoPedido(id_produto = produto, id_pedido = pedidoAtivo, quantidade_itens = request.POST['qnt'])
+            
+        else:
 
-            return redirect("carrinhoView")
+
+            pedidoNovo = Pedido(cliente = cliente, status_pedido=False)
+            pedidoNovo.save()
+
+            produto = Produto.objects.get(slug = slug)
+            produto_pedido = ProdutoPedido(id_produto = produto, id_pedido = pedidoNovo, quantidade_itens = request.POST['qnt'])
+
+        return redirect("carrinhoView")
             
     return render(request, template_name, array)
     
@@ -268,10 +230,6 @@ def criarDeliveryView(request):
     else:
         return render(request,"delivery/cadastroDelivery.html", array)
         
-
-
-
-
 def criarClienteView(request):
     array = {}
     endereco = EnderecoForm(request.POST or None)

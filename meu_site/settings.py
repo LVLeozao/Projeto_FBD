@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'meu_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_NAME', 'fbd'),
+        'NAME': os.environ.get('DB_NAME', 'ProjetoFBD'),
         'USER': os.environ.get('DB_USER', 'postgres'),
         'PASSWORD': os.environ.get('DB_PASS', '1027210916'),
         'HOST': 'localhost',
