@@ -11,7 +11,7 @@ urlpatterns = [
     path("accounts/criarCliente/", views.criarClienteView, name="criarCliente"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("pedeMais/", views.HomeView, name = "home"),
-    path('pedeMais/carrinho', views.PedidoDeliveryView, name="carrinhoView"),
+    path('pedeMais/carrinho', views.CarrinhoDeliveryView, name="carrinhoView"),
     path('pedeMais/produto', views.ProdutoView.as_view(), name="produtoView"),
     path('pedeMais/produto/cadastroProduto', views.cadastroProduto.as_view(), name="cadastroProdutoView"),
     path("pedeMais/listDeliverys/", views.ListDeliveryView, name="listDeliverys"),

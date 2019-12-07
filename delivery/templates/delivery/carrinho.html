@@ -7,16 +7,22 @@ Carrinho - Pede Mais
 
 
 {% block content %}
-<div style="position: relative ;padding: 2vh; width: 60vw; margin-top: 3vh;">
+
+<div style="position: fixed; width: 62vw; padding: 1vw;">
+
     {% if objects != "False" %}
-    <table class="table table-bordered table-hover table-light">
+    <table class="table table table-hover table-light rounded-lg">
         <thead>
             <tr>
                 <th class="d-flex justify-content-center" scope="col">#ID</th>
                 <th scope="col">Produto</th>
                 <th scope="col">Valor</th>
                 <th class="d-flex justify-content-center" scope="col">Quantidade</th>
-                <th scope="col">Remover</th>
+                <th scope="col">
+                    <div class="d-flex justify-content-center">
+                        Remover
+                    </div>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -24,14 +30,18 @@ Carrinho - Pede Mais
             {% for obj in objects %}
 
             <tr>
-                <th class="d-flex justify-content-center" scope="row">{{obj.pk}}</th>
-                <td>{{obj.nome}}</td>
-                <td>{{obj.valor}}</td>
+                <th class="d-flex justify-content-center" scope="row">{{obj.id_produto.pk}}</th>
+                <td>{{obj.id_produto.nome}}</td>
+                <td>{{obj.id_produto.valor}}</td>
 
-                <td class="d-flex justify-content-center">{{obj.qnt}}</td>
+                <td class="d-flex justify-content-center">{{obj.quantidade_itens}}</td>
 
-                <td> 
-                    <button class = "btn btn-light" type = "submit"><img src = "{% static 'img/icons/remove_circle-24px.svg' %}"></button>
+                <td>
+                    <div class="d-flex justify-content-center">
+
+                        <button class="btn btn-danger" type="submit"><img
+                                src="{% static 'img/icons/remove_circle-24px.svg' %}"></button>
+                    </div>
                 </td>
 
 
@@ -44,10 +54,11 @@ Carrinho - Pede Mais
         </tbody>
     </table>
 
+
 </div>
 
 
-<div style="margin-left: 65vw;width: 30vh; position: relative; padding: 4vh; margin-top: -20vh;">
+<div  style="position: fixed; padding: 3vh; margin-left: 65vw;">
     <div class="card" style="width: 30vw; ">
         <div class="card-header">
             <div class="d-flex justify-content-center">
@@ -64,7 +75,7 @@ Carrinho - Pede Mais
 
 
 
-                <b>Valor Total: </b>{{valor}}</br>
+                <b>Valor Total: </b>R$ {{valor}}</br>
                 <b>Quantidade Total: </b>{{qnt}}
             </p>
             <form action="" method="POST">
@@ -78,6 +89,7 @@ Carrinho - Pede Mais
         </div>
     </div>
 </div>
+
 
 
 {% else %}

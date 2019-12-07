@@ -18,22 +18,39 @@ def getGroup(pk):
 def calcularValor(produtos):
     valorTotal = 0
     qntTotal = 0
-    for x in produtos:
-        valorTotal+=(x.valor*x.qnt)
-        qntTotal+=x.qnt
+
+    for produto in produtos:
+        
+        valorTotal += (produto.id_produto.valor * produto.quantidade_itens)
+        qntTotal+=produto.quantidade_itens
     
     return valorTotal,  qntTotal
 
     
     
 
-def PedidoDeliveryView(request):
+def CarrinhoDeliveryView(request):
     template_name = "delivery/carrinho.html"
-    array={}
-    array['type'] = getGroup(request.user.pk)
+    pedidoAtivo = Pedido.objects.filter(status_pedido=False).first()
+    objects = ProdutoPedido.objects.filter(id_pedido = pedidoAtivo).all()
+    cliente = request.user.getCliente.first()
+    endereco = request.user.getCliente.first().endereco.first()
+    valorTotal, qntTotal =  calcularValor(objects)
 
-    
-    
+    array={}
+
+    array['type'] = getGroup(request.user.pk)
+    array['objects'] = objects
+    array["cliente"] = cliente
+    array['endereco'] = endereco
+    array['valor'] = valorTotal
+    array['qnt'] = qntTotal
+
+
+    if request.POST:
+        pass
+
+
 
     return render(request, template_name, array)
 
@@ -101,7 +118,6 @@ def ProdutosListView(request, slug):
     return render(request, template_name, array)
 
 
-
 def HomeView(request):
         user = User.objects.get(id = request.user.pk)
         cliente = user.getCliente.all().first()
@@ -134,22 +150,20 @@ def ProdutoDetailView(request, slug):
         if pedidoAtivo is not None:
             produto = Produto.objects.get(slug = slug)
             produto_pedido = ProdutoPedido(id_produto = produto, id_pedido = pedidoAtivo, quantidade_itens = request.POST['qnt'])
+            produto_pedido.save()
             
         else:
-
-
             pedidoNovo = Pedido(cliente = cliente, status_pedido=False)
             pedidoNovo.save()
 
             produto = Produto.objects.get(slug = slug)
             produto_pedido = ProdutoPedido(id_produto = produto, id_pedido = pedidoNovo, quantidade_itens = request.POST['qnt'])
+            produto_pedido.save()
 
         return redirect("carrinhoView")
             
     return render(request, template_name, array)
     
-
-
 
 def criarDeliveryView(request):
     array = {}

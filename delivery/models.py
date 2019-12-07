@@ -145,7 +145,7 @@ class ProdutoPedido(models.Model):
     quantidade_itens = models.IntegerField(verbose_name="Quantidade", null=True, blank=True)
 
     def __str__(self):
-        return "Pedido: {}, Produto: {}".format(self.id_pedido.id, self.id_protudo.id)
+        return "{}".format(self.pk)
 
 class Pedido(models.Model):
     ENTREGA_CHOICE = (
