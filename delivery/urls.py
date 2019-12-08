@@ -12,6 +12,7 @@ urlpatterns = [
     path("pedeMais/", views.HomeView, name = 'home'),
     path('pedeMais/produto', views.ProdutoView.as_view(), name="produtoView"),
     path('pedeMais/carrinho', views.CarrinhoDeliveryView, name="carrinhoView"),
+    path('pedeMais/carrinho/editarEndereco/<int:pk>', views.alterarEndereco, name="alterarEndereco"),
     path('pedeMais/carrinho/<int:pk>', views.removerItem, name = "excluir"),
     path('pedeMais/produto/cadastroProduto', views.cadastroProduto.as_view(), name="cadastroProdutoView"),
     path("pedeMais/listDeliverys/", views.ListDeliveryView, name="listDeliverys"),

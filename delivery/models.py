@@ -142,6 +142,8 @@ class Pagamento(models.Model):
 class ProdutoPedido(models.Model):
     id_produto = models.ForeignKey("Produto", on_delete=models.PROTECT)
     id_pedido = models.ForeignKey("Pedido", on_delete=models.PROTECT)
+    id_delivery = models.ForeignKey(Delivery, on_delete=models.PROTECT, related_name="getIdDelivery")
+
     quantidade_itens = models.IntegerField(verbose_name="Quantidade", null=True, blank=True)
 
     def __str__(self):
@@ -157,7 +159,7 @@ class Pedido(models.Model):
     entregador = models.ForeignKey(Entregador, on_delete = models.PROTECT, blank=True , null=True)
     status_pedido = models.BooleanField(default=False, verbose_name="Foi Finalizdo?")  # Se true foi finalizado, se false ainda ativo
     entrega = models.CharField(max_length=50, choices=ENTREGA_CHOICE, blank=True , null=True)
-    endereco_entrega = models.ManyToManyField(Endereco, blank=True , null=True)
+    endereco_entrega = models.ForeignKey(Endereco, on_delete = models.PROTECT, blank=True , null=True)
     cliente = models.ForeignKey(Cliente,  blank=True, null = True, on_delete= models.PROTECT, related_name="getCliente")
     pagamento = models.ForeignKey(Pagamento, on_delete=models.PROTECT, blank=True , null=True)
     

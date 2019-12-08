@@ -34,22 +34,24 @@ def CarrinhoDeliveryView(request):
     pedidoAtivo = Pedido.objects.filter(status_pedido=False).first()
     objects = ProdutoPedido.objects.filter(id_pedido = pedidoAtivo).all()
     cliente = request.user.getCliente.first()
-    endereco = request.user.getCliente.first().endereco.first()
-    valorTotal, qntTotal =  calcularValor(objects)
+    
+    if pedidoAtivo.endereco_entrega is None:
+        endereco_entrega = request.user.getCliente.first().endereco.first()
+    else:
+        endereco_entrega = pedidoAtivo.endereco_entrega
 
+    valorTotal, qntTotal =  calcularValor(objects)
     array={}
 
     array['type'] = getGroup(request.user.pk)
     array['objects'] = objects
     array["cliente"] = cliente
-    array['endereco'] = endereco
+    array['enderecoEntrega'] = endereco_entrega
     array['valor'] = valorTotal
     array['qnt'] = qntTotal
     array['id'] = pedidoAtivo.pk
+    array['end'] = EnderecoForm
 
-
-    if request.POST:
-        pass
 
 
 
@@ -57,7 +59,43 @@ def CarrinhoDeliveryView(request):
 
 
 
+def alterarEndereco(request, pk):
+    template_name = "delivery/editarEndereco.html"
+    
+    array = {}
+    array['objects'] = EnderecoForm
+    array['type'] = getGroup(request.user.pk)
+    
+    if request.POST:
 
+        rua = request.POST['rua']
+        numero = request.POST['numero']
+        complemento = request.POST['complemento']
+        bairro = request.POST['bairro']
+        cidade = request.POST['cidade']
+        estado = request.POST['estado']
+        pais = request.POST['pais']
+
+        objEndereco = Endereco.objects.filter(rua=rua, numero=numero, complemento=complemento, bairro=bairro, cidade=cidade, estado=estado, pais=pais).first()
+        objPedido = Pedido.objects.filter(status_pedido=False).first()
+        
+        if objEndereco is not None:
+            objPedido.endereco_entrega = objEndereco
+            objPedido.save()
+        
+        else:
+            objEndereco = Endereco(rua=rua, numero=numero, complemento=complemento,bairro=bairro, cidade=cidade, estado=estado, pais=pais)
+            objEndereco.save()
+
+            objPedido.endereco_entrega = objEndereco
+            objPedido.save()
+
+        return redirect("carrinhoView")
+        
+
+
+
+    return render(request,template_name, array)
 
         
 

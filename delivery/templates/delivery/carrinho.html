@@ -1,13 +1,13 @@
 {% extends "dashboard.html" %}
 {% load staticfiles %}
-
+{% load crispy_forms_tags %}
 {% block title %}
 Carrinho - Pede Mais
 {% endblock title %}
 
 
 {% block content %}
-<!--style="clear: both; position: relative; width: 62vw; padding: 1vw;"-->
+
 <div class="d-flex bd-highlight mb-3">
 
     <div class="p-2 bd-highlight" style="width: 62vw; padding: 1vw;">
@@ -25,7 +25,7 @@ Carrinho - Pede Mais
                             Remover
                         </div>
                     </th>
-                    
+
                 </tr>
             </thead>
             <tbody>
@@ -43,12 +43,12 @@ Carrinho - Pede Mais
                     <td>
                         <div class="d-flex justify-content-center">
                             <a class="btn btn-outline-danger" type="button" href="{% url 'excluir' obj.pk %}">
-                                    <img src="{% static 'img/icons/remove_circle-24px.svg' %}">
+                                <img src="{% static 'img/icons/remove_circle-24px.svg' %}">
                             </a>
                         </div>
                     </td>
 
-                  
+
 
                 </tr>
 
@@ -60,7 +60,7 @@ Carrinho - Pede Mais
 
     </div>
 
-    
+
 
     <div class="ml-auto p-2 bd-highlight">
         <div class="card" style="width: 30vw;">
@@ -70,26 +70,30 @@ Carrinho - Pede Mais
                 </div>
             </div>
             <div class="card-body">
-
                 <p class="card-text">
                     <b>Nome: </b>{{cliente.nome}}<br>
-                    <b>Rua:</b> {{endereco.rua}}<br>
-                    <b>Bairro: </b>{{endereco.bairro}}<br>
-                    <b>Nº: </b>{{endereco.numero}}<br>
+                    <b>Rua:</b> {{enderecoEntrega.rua}}<br>
+                    <b>Bairro: </b>{{enderecoEntrega.bairro}}<br>
+                    <b>Nº: </b>{{enderecoEntrega.numero}}<br>
 
 
 
                     <b>Valor Total: </b>R$ {{valor}}</br>
                     <b>Quantidade Total: </b>{{qnt}}
                 </p>
-                <form action="" method="POST">
 
-                    {% csrf_token %}
-                    <div class="d-flex justify-content-end">
-                        <input class="btn btn-primary btn-lg btn-block" type="submit" value="Confirmar">
-                    </div>
 
-                </form>
+                <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary btn-lg btn-block"  type="submit"
+                        name='confirmar'>Confimar</button>
+
+                    <a class="btn btn-outline-secondary btn-lg " style="margin-left: 1vw; "
+                        href="{% url 'alterarEndereco' id %}"><img src="{% static 'img/icons/edit-24px.svg' %}"></a>
+                    
+                </div>
+
+
+
             </div>
         </div>
     </div>
@@ -110,6 +114,8 @@ Carrinho - Pede Mais
     </div>
     {% endif %}
 </div>
+
+
 
 
 
