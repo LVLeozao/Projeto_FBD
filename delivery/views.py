@@ -45,6 +45,7 @@ def CarrinhoDeliveryView(request):
     array['endereco'] = endereco
     array['valor'] = valorTotal
     array['qnt'] = qntTotal
+    array['id'] = pedidoAtivo.pk
 
 
     if request.POST:
@@ -324,6 +325,13 @@ def criarClienteView(request):
 
         return render(request,"delivery/cadastroCliente.html", array)
 
+
+def removerItem(request, pk):
+    template_name = "delivery/carrinho.html"
+    objects = ProdutoPedido.objects.get(id = pk)    
+    objects.delete()
+
+    return redirect("carrinhoView")
 
 
 

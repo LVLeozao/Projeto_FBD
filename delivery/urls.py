@@ -6,13 +6,13 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    
     path("accounts/criarDelivery/", views.criarDeliveryView, name="criarDelivery"),
     path("accounts/criarCliente/", views.criarClienteView, name="criarCliente"),
     path("accounts/", include("django.contrib.auth.urls")),
-    path("pedeMais/", views.HomeView, name = "home"),
-    path('pedeMais/carrinho', views.CarrinhoDeliveryView, name="carrinhoView"),
+    path("pedeMais/", views.HomeView, name = 'home'),
     path('pedeMais/produto', views.ProdutoView.as_view(), name="produtoView"),
+    path('pedeMais/carrinho', views.CarrinhoDeliveryView, name="carrinhoView"),
+    path('pedeMais/carrinho/<int:pk>', views.removerItem, name = "excluir"),
     path('pedeMais/produto/cadastroProduto', views.cadastroProduto.as_view(), name="cadastroProdutoView"),
     path("pedeMais/listDeliverys/", views.ListDeliveryView, name="listDeliverys"),
     path('pedeMais/listDeliverys/listProdutos/<slug:slug>/', views.ProdutosListView, name="listProdutos"),
