@@ -195,10 +195,46 @@ def HomeView(request):
         array['type'] = getGroup(request.user.pk)
         return render(request, "delivery/home.html", array)
     
-class cadastroProduto(CreateView):
-    model = Produto
-    template_name = "delivery/cadastroProduto.html"
-    success_url = reverse_lazy("home")
+def cadastroProduto(request):
+    
+    form = ProdutoForm
+    array = {}
+    array['type'] = getGroup(request.user.pk)
+    array['form'] = form
+    delivery = request.user.getDelivery.first()
+    if request.POST:
+
+        nome = request.POST['nome']
+        valor = request.POST['valor']
+        categoria_produto = request.POST['categoria_produto']
+        observacoes = request.POST['observacoes']
+        data_validade = request.POST['data_validade']
+        peso = request.POST['peso']
+        img = request.POST['img']
+
+        objProduto = Produto.objects.filter(nome = nome, valor = valor, categoria_produto = categoria_produto, 
+        observacoes = observacoes, data_validade = data_validade, peso = peso, img = img).first()
+
+        if objProduto is not None:
+
+            objProduto.restaurante.add(delivery)
+            objProduto.save()
+
+            
+        else:
+
+            objProduto = Produto(nome = nome, valor = valor, categoria_produto = categoria_produto, 
+            observacoes = observacoes, data_validade = data_validade, peso = peso, img = img)
+            objProduto.save()
+            objProduto.restaurante.add(delivery)
+            objProduto.save()
+
+            return redirect('home')
+
+    
+
+    return render(request, "delivery/cadastroProduto.html", array)
+    
 
 class ProdutoView(TemplateView):
     template_name = "delivery/viewProduto.html"

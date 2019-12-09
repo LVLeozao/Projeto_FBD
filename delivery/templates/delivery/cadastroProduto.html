@@ -1,5 +1,7 @@
 {% extends "dashboard.html" %}
 {% load staticfiles %}
+{% load crispy_forms_tags %}
+
 
 {% block title %}
 Produtos - Pede Mais
@@ -7,5 +9,24 @@ Produtos - Pede Mais
 
 
 {% block content %}
-{{form}}
+<div class="container" style="padding: 3vw; width: 60vw;">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="card">
+            <div class="card-header">
+                <h1 class="d-flex justify-content-center">Cadastrar Produto</h1>
+            </div>
+            <div class="card-body">
+
+                {{form|crispy}}
+                <div class="d-flex justify-content-center">
+                    <a class="btn btn-outline-secondary btn-lg" href="{% url 'produtoView' %}">Voltar</a>
+                    <button class="btn btn-primary btn-lg" style="margin-left: 1vw;"
+                    type="submit">Cadastrar</button>
+                </div>
+                
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock content %}

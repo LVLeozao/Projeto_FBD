@@ -183,7 +183,7 @@ class Produto(models.Model):
     valor = models.DecimalField(decimal_places=2,max_digits=8)
     categoria_produto  = models.CharField(max_length=50, choices=CATEGORIA_CHOICE, verbose_name = "Categoria")
     observacoes = models.TextField()
-    data_validade = models.DateTimeField()
+    data_validade = models.DateTimeField(verbose_name="Data de Validade", help_text="EX.: AAAA-MM-DD HH:MM")
     peso = models.DecimalField(decimal_places=3,max_digits=5, help_text="(g)")
     restaurante = models.ManyToManyField(Delivery, related_name="getDeliverys")
     img = models.ImageField(help_text="Tamanho máximo 50x50", verbose_name="Imagem", null = True, blank=True)
