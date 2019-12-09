@@ -7,116 +7,128 @@ Carrinho - Pede Mais
 
 
 {% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="d-flex bd-highlight mb-3">
+        <div class="p-2 bd-highlight" style="width: 62vw; padding: 1vw;">
+            {% if existePedido == 'true' %}
+            <table class="table table table-hover table-light rounded-lg">
+                <thead>
+                    <tr>
+                        <th class="d-flex justify-content-center" scope="col">#ID</th>
+                        <th scope="col">Produto</th>
+                        <th scope="col">Valor</th>
+                        <th class="d-flex justify-content-center" scope="col">Quantidade</th>
+                        <th scope="col">
+                            <div class="d-flex justify-content-center">
+                                Remover
+                            </div>
+                        </th>
 
-<div class="d-flex bd-highlight mb-3">
+                    </tr>
+                </thead>
+                <tbody>
 
-    <div class="p-2 bd-highlight" style="width: 62vw; padding: 1vw;">
+                    {% for obj in objects %}
 
-        {% if objects != "False" %}
-        <table class="table table table-hover table-light rounded-lg">
-            <thead>
-                <tr>
-                    <th class="d-flex justify-content-center" scope="col">#ID</th>
-                    <th scope="col">Produto</th>
-                    <th scope="col">Valor</th>
-                    <th class="d-flex justify-content-center" scope="col">Quantidade</th>
-                    <th scope="col">
-                        <div class="d-flex justify-content-center">
-                            Remover
-                        </div>
-                    </th>
+                    <tr>
+                        <th class="d-flex justify-content-center" scope="row">{{obj.id_produto.pk}}</th>
+                        <td>{{obj.id_produto.nome}}</td>
+                        <td>{{obj.id_produto.valor}}</td>
 
-                </tr>
-            </thead>
-            <tbody>
-
-                {% for obj in objects %}
-
-                <tr>
-                    <th class="d-flex justify-content-center" scope="row">{{obj.id_produto.pk}}</th>
-                    <td>{{obj.id_produto.nome}}</td>
-                    <td>{{obj.id_produto.valor}}</td>
-
-                    <td class="d-flex justify-content-center">{{obj.quantidade_itens}}</td>
-
-
-                    <td>
-                        <div class="d-flex justify-content-center">
-                            <a class="btn btn-outline-danger" type="button" href="{% url 'excluir' obj.pk %}">
-                                <img src="{% static 'img/icons/remove_circle-24px.svg' %}">
-                            </a>
-                        </div>
-                    </td>
+                        <td class="d-flex justify-content-center">{{obj.quantidade_itens}}</td>
 
 
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-outline-danger" type="button" href="{% url 'excluir' obj.pk %}">
+                                    <img src="{% static 'img/icons/remove_circle-24px.svg' %}">
+                                </a>
+                            </div>
+                        </td>
 
-                </tr>
 
 
-                {% endfor %}
-            </tbody>
-        </table>
+                    </tr>
 
 
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+
+
+        {% if existePedido == 'true' %}
+        <div class="ml-auto p-2 bd-highlight">
+            <div class="card" style="width: 30vw;">
+                <div class="card-header">
+                    <div class="d-flex justify-content-center">
+                        <h1>Pedido <b>Nº{{pk}}</b> </h1>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <b>Nome: </b>{{cliente.nome}}<br>
+                        <b>Rua:</b> {{enderecoEntrega.rua}}<br>
+                        <b>Bairro: </b>{{enderecoEntrega.bairro}}<br>
+                        <b>Nº: </b>{{enderecoEntrega.numero}}<br>
+                        <b>Valor Total: </b>R$ {{valor}}</br>
+                        <b>Quantidade Total: </b>{{qnt}}
+                    </p>
+                    <div class="d-flex justify-content-end">
+                        <a class="btn btn-outline-secondary" href= "{% url 'alterarEndereco' pk %}">
+                                <img src="{% static 'img/icons/edit-24px.svg' %}">
+                                Editar
+                        </a>
+                        <button class="btn btn-primary btn-lg btn-block" style = "margin-left: 1vw;" type="submit">Confimar</button>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+        {% endif %}
     </div>
 
 
 
-    <div class="ml-auto p-2 bd-highlight">
+    {% if  existePedido == 'false' %}
+
+    <div style="margin-left: 35vw; margin-top: 15vh;">
         <div class="card" style="width: 30vw;">
-            <div class="card-header">
-                <div class="d-flex justify-content-center">
-                    <h1>Pedido <b>Nº</b> {{id}}</h1>
-                </div>
-            </div>
+            <h5 class="card-header">
+                Acompanhamento de pedido
+
+            </h5>
+
             <div class="card-body">
-                <p class="card-text">
-                    <b>Nome: </b>{{cliente.nome}}<br>
-                    <b>Rua:</b> {{enderecoEntrega.rua}}<br>
-                    <b>Bairro: </b>{{enderecoEntrega.bairro}}<br>
-                    <b>Nº: </b>{{enderecoEntrega.numero}}<br>
 
 
 
-                    <b>Valor Total: </b>R$ {{valor}}</br>
-                    <b>Quantidade Total: </b>{{qnt}}
-                </p>
+                <p class="card-text"><b>Entregador:</b> {{acompanhamentoEntregador}}</p>
 
-
+                <p class="card-text"><b>Status:</b> {{acompanhamentoStatus }}</p>
+                <p class="card-text"><b>Endereço da Entrega:</b> {{acompanhamentoEndereco}}</p>
+                <p class="card-text"><b>Cliente:</b> {{acompanhamentoCliente}}</p>
+                <p class="card-text"><b>Status Pagamento:</b> {{acompanhamentoPendente}}</p>
                 <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary btn-lg btn-block"  type="submit"
-                        name='confirmar'>Confimar</button>
-
-                    <a class="btn btn-outline-secondary btn-lg " style="margin-left: 1vw; "
-                        href="{% url 'alterarEndereco' id %}"><img src="{% static 'img/icons/edit-24px.svg' %}"></a>
-                    
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </div>
-
-
-
             </div>
         </div>
     </div>
 
-
-
-    {% else %}
-    <div class="card">
-        <div class="card-header">
-            <b>Carrinho de compras vazio,</b>
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Seu carrinho de compras encontra-se vazio, adicione novos produtos no 'Menu de
-                Deliverys'</h5>
-
-            <a class="btn btn-primary" href="{% url 'listDeliverys' %}" role="button">Vamos às compras ?</a>
-        </div>
-    </div>
     {% endif %}
-</div>
 
+    </div>
 
-
-
-
+</form>
 {% endblock content %}
+
+
+<!-- 
+<a class="btn btn-outline-secondary btn-lg " style="margin-left: 1vw; "
+                            href="{% url 'changeEndereco' identificador %}"><img
+                                src="{% static 'img/icons/edit-24px.svg' %}"></a> -->

@@ -30,32 +30,62 @@ def calcularValor(produtos):
     
 
 def CarrinhoDeliveryView(request):
-    template_name = "delivery/carrinho.html"
     pedidoAtivo = Pedido.objects.filter(status_pedido=False).first()
-    objects = ProdutoPedido.objects.filter(id_pedido = pedidoAtivo).all()
-    cliente = request.user.getCliente.first()
-    
-    if pedidoAtivo.endereco_entrega is None:
-        endereco_entrega = request.user.getCliente.first().endereco.first()
-    else:
-        endereco_entrega = pedidoAtivo.endereco_entrega
-
-    valorTotal, qntTotal =  calcularValor(objects)
     array={}
 
-    array['type'] = getGroup(request.user.pk)
-    array['objects'] = objects
-    array["cliente"] = cliente
-    array['enderecoEntrega'] = endereco_entrega
-    array['valor'] = valorTotal
-    array['qnt'] = qntTotal
-    array['id'] = pedidoAtivo.pk
-    array['end'] = EnderecoForm
+    if pedidoAtivo is not None:
+        objects = ProdutoPedido.objects.filter(id_pedido = pedidoAtivo).all()
+        cliente = request.user.getCliente.first()
+        
+        if pedidoAtivo.endereco_entrega is None:
+            endereco_entrega = request.user.getCliente.first().endereco.first()
+        else:
+            endereco_entrega = pedidoAtivo.endereco_entrega
+
+        valorTotal, qntTotal =  calcularValor(objects)
+        
+
+        array['type'] = getGroup(request.user.pk)
+        array['existePedido'] = 'true'
+        array['objects'] = objects
+        array["cliente"] = cliente
+        array['enderecoEntrega'] = endereco_entrega
+        array['valor'] = valorTotal
+        array['qnt'] = qntTotal
+        array['pk'] = pedidoAtivo.pk
+        array['end'] = EnderecoForm
+    
+    elif Pedido.objects.filter(entrega__lt =3).first() is not None:
+        array['existePedido'] = 'false'
+        array['type'] = getGroup(request.user.pk)
+
+        pedidoAtivo = Pedido.objects.filter(entrega__lt =3).first()
+
+        
+        array['acompanhamentoEntregador'] = "A definir" if pedidoAtivo.entregador == None else pedidoAtivo.entregador
+        array['acompanhamentoStatus'] = "Preparando" if pedidoAtivo.status_pedido == 1 else "A Caminho"
+        array['acompanhamentoEndereco'] = pedidoAtivo.endereco_entrega
+        array['acompanhamentoCliente'] = pedidoAtivo.cliente
+        array['acompanhamentoPendente'] = "Pendente"
+    
+    else:
+        array['type'] = getGroup(request.user.pk)
+        array['mensagem'] = "True"
 
 
 
 
-    return render(request, template_name, array)
+    if request.POST:
+
+        pedidoAtivo.status_pedido = True
+        pedidoAtivo.entrega = 1
+        pedidoAtivo.save()
+
+        return redirect("home")
+
+
+
+    return render(request, "delivery/carrinho.html", array)
 
 
 
@@ -177,26 +207,26 @@ class ProdutoView(TemplateView):
 def ProdutoDetailView(request, slug):
     template_name = "delivery/listProdutoDetail.html"
     array = {}
-    array["objects"] = Produto.objects.get(slug = slug)
+    produto = Produto.objects.get(slug = slug)
+    array["objects"] = produto
     array['type'] = getGroup(request.user.pk)
 
     if request.POST:
 
         cliente = request.user.getCliente.first()
-        
         pedidoAtivo = Pedido.objects.filter(status_pedido=False, cliente = cliente).first()
-
+        restaurante = produto.restaurante.first()
         if pedidoAtivo is not None:
             produto = Produto.objects.get(slug = slug)
-            produto_pedido = ProdutoPedido(id_produto = produto, id_pedido = pedidoAtivo, quantidade_itens = request.POST['qnt'])
+            produto_pedido = ProdutoPedido(id_produto = produto, id_pedido = pedidoAtivo, id_delivery = restaurante , quantidade_itens = request.POST['qnt'])
             produto_pedido.save()
             
         else:
             pedidoNovo = Pedido(cliente = cliente, status_pedido=False)
             pedidoNovo.save()
-
+            restaurante = produto.restaurante.first()
             produto = Produto.objects.get(slug = slug)
-            produto_pedido = ProdutoPedido(id_produto = produto, id_pedido = pedidoNovo, quantidade_itens = request.POST['qnt'])
+            produto_pedido = ProdutoPedido(id_produto = produto, id_pedido = pedidoNovo, id_delivery = restaurante, quantidade_itens = request.POST['qnt'])
             produto_pedido.save()
 
         return redirect("carrinhoView")
@@ -371,5 +401,17 @@ def removerItem(request, pk):
 
     return redirect("carrinhoView")
 
+def HistoricoPedidoView(request):
+    array = {}
+    array['type'] = getGroup(request.user.pk)
+
+    cliente = request.user.getCliente.first()
+    pedidos = cliente.getCliente.all()
+
+
+    array['objects'] = pedidos
+
+
+    return render(request, 'delivery/historicoPedidos.html', array)
 
 

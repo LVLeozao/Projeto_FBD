@@ -1,0 +1,36 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block title %}
+Carrinho - Pede Mais
+{% endblock title %}
+
+
+{% block content %}
+
+<div class = "container" style="padding: 2vw;">
+    {% for obj in objects %}
+
+
+
+    <table class="table table-secondary">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">{{obj.pk}}</th>
+                <td>{{obj.cliente}}</td>
+                <td>{{ôbj.pagamento.valor_total}}</td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+{% endfor %}
+
+{% endblock content %}
