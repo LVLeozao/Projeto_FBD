@@ -37,7 +37,7 @@ Listar Produtos - Pede Mais
                 <td>{{obj.data_validade}}</td>
                 <td>{{obj.peso}}</td>
                 <td>
-                    <div class="d-flex justify-content-center"><a class="btn btn-outline-danger" href="#">Remover</a>
+                    <div class="d-flex justify-content-center"><a class="btn btn-outline-danger" href="{% url 'removerProduto' obj.pk %}">Remover</a>
                 </td>
                 <td>
                     <div class="d-flex justify-content-center"><a class="btn btn-outline-secondary" href="{% url 'editarProduto' obj.pk %}">Editar</a>

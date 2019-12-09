@@ -473,3 +473,14 @@ class EditProduto(UpdateView):
     form_class = ProdutoForm
     template_name = "delivery/editarProduto.html"
     success_url= reverse_lazy("listarProdutosCadastrados")
+
+def removerProduto(request, pk):
+    delivery = request.user.getDelivery.first()
+
+    produto = Produto.objects.get(pk = pk)
+    produto.restaurante.remove(delivery)
+    produto.save()
+
+    return redirect("listarProdutosCadastrados")
+
+

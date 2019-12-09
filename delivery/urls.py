@@ -13,6 +13,7 @@ urlpatterns = [
     path("pedeMais/delivery/produto/", views.ProdutoView.as_view(), name = 'produtoView'),
     path("pedeMais/delivery/produto/cadastrarProduto/", views.cadastroProduto, name = 'cadastroProduto'),
     path("pedeMais/delivery/produto/ListarProdutosCadastrados/<int:pk>/editar/", views.EditProduto.as_view(), name="editarProduto"),
+    path("pedeMais/delivery/produto/ListarProdutosCadastrados/<int:pk>/remover/", views.removerProduto, name = "removerProduto"),
     path("pedeMais/delivery/produto/ListarProdutosCadastrados/", views.ListarProdutosCadastrados, name = 'listarProdutosCadastrados'),
     path('pedeMais/carrinho/editarEndereco/<int:pk>', views.alterarEndereco, name="alterarEndereco"),
     path('pedeMais/carrinho/', views.CarrinhoDeliveryView, name="carrinhoView"),
