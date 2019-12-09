@@ -106,15 +106,10 @@ class Entregador(models.Model):
     nome = models.CharField(max_length=255)
     slug = models.SlugField(max_length=250, help_text="EX.:nome-segundo")
     cpf = models.CharField(max_length=11, help_text="EX.: 99999999999")
-    
-    telefone1 = models.CharField(max_length=14, help_text="EX.:99999999999999")
-    telefone2 = models.CharField(max_length=14, null=True, blank=True, help_text="EX.:9999999999999")
-
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.PROTECT, related_name="get_entregador")
-    img = models.ImageField(help_text="Tamanho máximo 50x50", verbose_name="Imagem", null = True, blank=True)
-
+    telefone1 = models.CharField(max_length=14, help_text="EX.:(99)99999-9999")
+    telefone2 = models.CharField(max_length=13, null=True, blank=True, help_text="EX.:(87)3333-3333")
     endereco = models.ManyToManyField(Endereco)
-    filiado = models.OneToOneField(Delivery, on_delete=models.PROTECT)
+    filiado = models.ForeignKey(Delivery, on_delete=models.PROTECT, related_name="getFiliados")
     placa_veiculo = models.CharField(max_length=8, verbose_name="Placa do Veículo", help_text="EX.: AAA-9999")
 
 
@@ -123,6 +118,11 @@ class Entregador(models.Model):
 
     def __str__(self):
         return self.nome
+
+    def get_slug_delete(self):
+        return reverse ("removerEntregador", args=[self.slug])
+    def get_slug_edit(self):
+        return reverse ("editarEntregador", args=[self.slug])
 
 class Pagamento(models.Model):
 

@@ -1,0 +1,60 @@
+{% extends 'dashboard.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+
+{% block title %}
+Cadastro - Entregador
+{% endblock title %}
+
+{% block content %}
+
+{% if mensagem == 'true' %}
+<div class="container" style="padding: 2px;">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Usuário existente, tente novamente com outros dados.</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+{% endif %}
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="container"
+        style="margin-top: 10vh;width: 50vw; height:65vh; padding: 2vw; background-color: #fafafa; border-radius: 20px;">
+        <div class="row">
+            <div class="col-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list"
+                        href="#list-endereco" role="tab" aria-controls="home">Endereço</a>
+                    <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                        href="#list-entregador" role="tab" aria-controls="profile">Entregador</a>
+                </div>
+            </div>
+
+
+            <div class="col-8" id='scrollContainerCadastro'>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="list-endereco" role="tabpanel"
+                        aria-labelledby="list-home-list">
+                        {{endereco|crispy}}
+                    </div>
+                    <div class="tab-pane fade" id="list-entregador" role="tabpanel" aria-labelledby="list-profile-list">
+                        {{entregador|crispy}}
+                        <div class="d-flex justify-content-end ">
+
+                            <button type = "submit" class="btn btn-primary">Cadastrar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+
+
+{% endblock content %}

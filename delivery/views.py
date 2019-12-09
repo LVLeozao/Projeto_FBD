@@ -236,10 +236,6 @@ def cadastroProduto(request):
     return render(request, "delivery/cadastroProduto.html", array)
     
 
-class ProdutoView(TemplateView):
-    template_name = "delivery/viewProduto.html"
-
-
 def ProdutoDetailView(request, slug):
     template_name = "delivery/listProdutoDetail.html"
     array = {}
@@ -484,3 +480,102 @@ def removerProduto(request, pk):
     return redirect("listarProdutosCadastrados")
 
 
+def cadastrarEntregador(request):
+    array = {}
+    endereco = EnderecoForm(request.POST or None)
+    entregador = EntregadorForm(request.POST or None)
+    delivery = request.user.getDelivery.first()
+    array["endereco"] = endereco
+    array["entregador"] = entregador
+    array['type'] = getGroup(request.user.pk)
+
+    if request.POST:
+        # Endereco
+        rua = request.POST['rua']
+        numero = request.POST['numero']
+        complemento = request.POST['complemento']
+        bairro = request.POST['bairro']
+        cidade = request.POST['cidade']
+        estado = request.POST['estado']
+        pais = request.POST['pais']
+        #Entregador
+        nome = request.POST['nome']
+        cpf = request.POST['cpf']
+        telefone1 = request.POST['telefone1']
+        telefone2 = request.POST['telefone2']
+        placa_veiculo = request.POST['placa_veiculo']
+
+
+        objEndereco = Endereco.objects.filter(rua=rua, numero=numero, complemento=complemento, bairro=bairro, cidade=cidade, estado=estado, pais=pais).first()
+
+        if objEndereco is None:
+            objEndereco = Endereco(rua=rua, numero=numero, complemento=complemento,bairro=bairro, cidade=cidade, estado=estado, pais=pais)
+            objEndereco.save()
+        
+        objEntregador = Entregador.objects.filter(nome = nome, cpf = cpf, telefone1 = telefone1, telefone2 = telefone2, endereco = objEndereco,
+        filiado = delivery, placa_veiculo = placa_veiculo).first()
+        
+
+        if objEntregador is None:
+            objEntregador = Entregador(nome = nome, cpf = cpf, telefone1 = telefone1, telefone2 = telefone2, filiado = delivery, placa_veiculo = placa_veiculo)
+            objEntregador.save()
+            objEntregador.endereco.add(objEndereco)
+            objEntregador.save()
+
+        else:
+            array['mensagem']  = "true"
+            return render(request, "delivery/cadastrarEntregador.html", array)
+        
+        return redirect('home')
+
+    return render(request, "delivery/cadastrarEntregador.html", array)
+
+
+
+def ListarEntregadoresCadastrados(request):
+
+    array ={}
+    array['type'] = getGroup(request.user.pk)
+    
+    
+    delivery = request.user.getDelivery.first()
+
+     
+
+    array['objects'] = delivery.getFiliados.all()
+
+    return render(request,'delivery/listEntregadoresCadastrados.html', array)
+
+class RemoverEntregadorView(DeleteView):
+    model = Entregador
+    template_name = "delivery/removerEntregador.html"
+    success_url = reverse_lazy("listarEntregadoresCadastrados")
+
+def EditarEntregadorView(request,slug):
+    array = {}
+
+    entregador = Entregador.objects.get(slug = slug)
+    enderecoEntregador = entregador.endereco.first()
+
+
+    endereco = EnderecoForm(request.POST or None, instance=enderecoEntregador)
+    entregador = EntregadorForm(request.POST or None, instance=entregador)
+    delivery = request.user.getDelivery.first()
+
+
+    if  entregador.is_valid():
+        entregador.save()
+    if endereco.is_valid():
+        endereco.save()
+        return redirect("listarEntregadoresCadastrados")
+
+
+
+    
+    array["endereco"] = endereco
+    array["entregador"] = entregador
+    array['type'] = getGroup(request.user.pk)
+
+    return render(request, "delivery/cadastrarEntregador.html", array)
+
+    

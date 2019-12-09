@@ -1,0 +1,15 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+
+{% block title %}
+Remover Entregador - Pede Mais
+{% endblock title %}
+
+
+{% block content %}
+<form action = "" method = "POST">
+        {% csrf_token %}
+        <p>Você tem certeza que desejan excluir "{{objects.nome}}" ? </p>
+        <input type="submit" value="confirmar">
+    </form>
+{% endblock content %}

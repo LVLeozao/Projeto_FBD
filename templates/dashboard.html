@@ -27,13 +27,13 @@
 <body>
 
     <nav class="navbar navbar-light bg-light">
-        
+
         <div class="d-flex justify-content-start">
             <a type="button" class="btn btn-light" href="{% url 'home' %}">
                 <img src="{% static 'img/icons/home-24px.svg' %}" width="24vh">
             </a>
         </div>
-        
+
 
         <div class="d-flex flex-row-reverse bd-highlight">
             <div class="p-1 bd-highlight">
@@ -47,12 +47,6 @@
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#">Editar Perfil</a>
 
-                        {% if type == 'd' %}
-                        <a class="dropdown-item" href="{% url 'produtoView' %}"> Produto</a>
-                        
-                        <a class="dropdown-item" href="#"> Entregador</a>
-
-                        {% endif %}
 
 
                         <div class="dropdown-divider"></div>
@@ -61,48 +55,96 @@
                 </div>
             </div>
             {% if type == 'c' %}
-                <div class="p-1 bd-highlight">
+            <div class="p-1 bd-highlight">
 
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            <img src="{% static 'img/icons/cart.svg' %}" width="24vh">
-                            Sacola de compras
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-light" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <img src="{% static 'img/icons/cart.svg' %}" width="24vh">
+                        Sacola de compras
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
 
-                            <a type="button" class="dropdown-item" href="{% url 'carrinhoView' %}">
-                                Pedido
-                            </a>
+                        <a type="button" class="dropdown-item" href="{% url 'carrinhoView' %}">
+                            Pedido
+                        </a>
 
-                            <a class="dropdown-item" href="{% url 'historicoPedido' %}">Histórico de pedidos</a>
+                        <a class="dropdown-item" href="{% url 'historicoPedido' %}">Histórico de pedidos</a>
 
-                        </div>
                     </div>
                 </div>
-                {% if buscar_cidade != "true" %}
-                <div class="p-1 bd-highlight">
-                    <a type="button" class="btn btn-light" href="{% url 'listDeliverys' %}">
-                        <img src="{% static 'img/icons/restaurant-24px.svg' %}" width="24vh">
-                        Delivery's
-                    </a>
-                </div>
-                {% endif %}
-
-                {% if buscar_cidade == 'true' %}
-                <div class="p-1 bd-highlight">
-                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModal">
-                        <img src="{% static 'img/icons/search.svg' %}" width="24vw">
-                        Buscar por Localização
-                    </button>
-                </div>
+            </div>
+            {% if buscar_cidade != "true" %}
+            <div class="p-1 bd-highlight">
+                <a type="button" class="btn btn-light" href="{% url 'listDeliverys' %}">
+                    <img src="{% static 'img/icons/restaurant-24px.svg' %}" width="24vh">
+                    Delivery's
+                </a>
+            </div>
             {% endif %}
 
+            {% if buscar_cidade == 'true' %}
+            <div class="p-1 bd-highlight">
+                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModal">
+                    <img src="{% static 'img/icons/search.svg' %}" width="24vw">
+                    Buscar por Localização
+                </button>
+            </div>
+            {% endif %}
 
+            {% endif %}
 
+            {% if type == "d" %}
+            <div class="p-1 bd-highlight">
+                <div class="btn-group">
 
+                    <button type="button" class="btn btn-light" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <img src="{% static 'img/icons/fastfood-24px.svg' %}" width="24vh">
+                        Produtos
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="{% url 'cadastroProduto' %}"> Cadastrar produto</a>
+                        <a class="dropdown-item" href="{% url 'listarProdutosCadastrados' %}"> Listar meus produto</a>
 
+                    </div>
+                </div>
+            </div>
 
+            <div class="p-1 bd-highlight">
+                <div class="btn-group">
+
+                    <button type="button" class="btn btn-light" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <img src="{% static 'img/icons/person_add-24px.svg' %}" width="24vh">
+                        Entregador
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="{% url 'cadastroEntregador' %}"> Cadastrar entregador</a>
+                        <a class="dropdown-item" href="{% url 'listarEntregadoresCadastrados' %}"> Listar meus
+                            entregadores</a>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-1 bd-highlight">
+                <div class="btn-group">
+
+                    <button type="button" class="btn btn-light" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <img src="{% static 'img/icons/list_alt-24px.svg' %}" width="24vh">
+                        Pedidos
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="{% url 'cadastroProduto' %}"> 
+                            Pedidos Pendentes <span class="badge badge-danger">4</span>
+                        </a>
+                        <a class="dropdown-item" href="{% url 'listarProdutosCadastrados' %}">Listar pedidos</a>
+
+                    </div>
+                </div>
+            </div>
             {% endif %}
 
         </div>
@@ -170,5 +212,3 @@
 </body>
 
 </html>
-
-

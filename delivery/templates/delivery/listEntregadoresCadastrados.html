@@ -1,0 +1,64 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+
+{% block title %}
+Listar Entregadores - Pede Mais
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container" style="padding: 2vw;">
+    <table class="table table-hover table-secondary">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">CPF</th>
+                <th scope="col">Telefone1</th>
+                <th scope="col">Telefone2</th>
+                <th scope="col">Endereço</th>
+                <th scope="col">Placa do Veículo</th>
+                
+                <th scope="col">
+                    <div class="d-flex justify-content-center">Remover</div>
+                </th>
+                <th scope="col">
+                    <div class="d-flex justify-content-center">Editar</div>
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in objects %}
+
+            <tr>
+                <th scope="row">{{obj.nome}}</th>
+                <td>{{obj.cpf}}</td>
+                <td>{{obj.telefone1}}</td>
+                {% if obj.telefone2 == None %}
+                        <td> - - - - - - - - - </td>    
+                {% else %}
+                    <td>{{obj.telefone2}}</td>
+                {% endif%}
+                <td>{{obj.endereco.first}}</td>
+                <td>{{obj.placa_veiculo}}</td>
+
+                <td>
+                    <div class="d-flex justify-content-center"><a class="btn btn-outline-danger" href="{{obj.get_slug_delete}}">Remover</a>
+                </td>
+                <td>
+                    <div class="d-flex justify-content-center"><a class="btn btn-outline-secondary" href="{{obj.get_slug_edit}}">Editar</a>
+                </td>
+
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock content %}

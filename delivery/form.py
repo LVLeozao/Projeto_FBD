@@ -11,8 +11,6 @@ class EnderecoForm(ModelForm):
         model = Endereco
         fields = ("rua", "numero", "complemento", "bairro", "cidade", "estado","pais")
 
-    
-    
 class ClienteForm(ModelForm):
     class Meta:
         model = Cliente
@@ -43,8 +41,8 @@ class ProdutoForm(ModelForm):
         model = Produto
         fields = ("nome", "valor", "categoria_produto", "observacoes", "data_validade", "peso", "img")
 
-
 class UserCreationFormWithEmail(UserCreationForm):
+
     email = forms.EmailField(required=True, help_text="Obrigatório")
     
     class Meta:
@@ -58,6 +56,10 @@ class UserCreationFormWithEmail(UserCreationForm):
     
         return email
 
-    
+
+class EntregadorForm(ModelForm):
+    class Meta:
+        model = Entregador
+        fields = ("nome", "cpf", "telefone1", "telefone2", "placa_veiculo") 
 
 
