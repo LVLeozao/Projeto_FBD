@@ -438,6 +438,7 @@ def removerItem(request, pk):
     return redirect("carrinhoView")
 
 def HistoricoPedidoView(request):
+    
     array = {}
     array['type'] = getGroup(request.user.pk)
 
@@ -451,3 +452,24 @@ def HistoricoPedidoView(request):
     return render(request, 'delivery/historicoPedidos.html', array)
 
 
+def ListarProdutosCadastrados(request):
+    array ={}
+    array['type'] = getGroup(request.user.pk)
+    
+    
+    delivery = request.user.getDelivery.first()
+
+    produtos = Produto.objects.filter(restaurante = delivery).all()
+
+    array['objects'] = produtos
+
+    return render(request,'delivery/listarProdutosCadastrados.html', array)
+
+
+
+
+class EditProduto(UpdateView):
+    model = Produto
+    form_class = ProdutoForm
+    template_name = "delivery/editarProduto.html"
+    success_url= reverse_lazy("listarProdutosCadastrados")

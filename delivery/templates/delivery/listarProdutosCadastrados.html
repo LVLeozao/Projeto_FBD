@@ -1,0 +1,56 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+
+{% block title %}
+Listar Produtos - Pede Mais
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container" style="padding: 2vw;">
+    <table class="table table-hover table-secondary">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Valor($)</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Data de Validade</th>
+                <th scope="col">Peso(g)</th>
+                <th scope="col">
+                    <div class="d-flex justify-content-center">Remover</div>
+                </th>
+                <th scope="col">
+                    <div class="d-flex justify-content-center">Editar</div>
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in objects %}
+
+            <tr>
+                <th scope="row">{{obj.nome}}</th>
+                <td>{{obj.valor}}</td>
+                <td>{{obj.categoria_produto}}</td>
+                <td>{{obj.data_validade}}</td>
+                <td>{{obj.peso}}</td>
+                <td>
+                    <div class="d-flex justify-content-center"><a class="btn btn-outline-danger" href="#">Remover</a>
+                </td>
+                <td>
+                    <div class="d-flex justify-content-center"><a class="btn btn-outline-secondary" href="{% url 'editarProduto' obj.pk %}">Editar</a>
+                </td>
+
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock content %}
